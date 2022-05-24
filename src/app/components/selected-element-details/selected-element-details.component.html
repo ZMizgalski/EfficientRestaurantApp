@@ -1,26 +1,46 @@
 <div class="recipe-preview-container">
   <p class="recipe-preview-container__p"></p>
-  <div class="recipe-content-containe">
-    <form class="recipe-content-containe-form">
-      <label for="name">Recipe name:</label>
-      <input placeholder="name" id="name" type="text" formControlName="name" />
-      <label for="preparationTime">Preperation time:</label>
+  <div class="recipe-content-container" *ngIf="loaded">
+    <form class="recipe-content-container-form" [formGroup]="form">
+      <label class="recipe-content-container-form__label" for="name"
+        >Recipe name:</label
+      >
       <input
+        class="recipe-content-container-form__input"
+        placeholder="name"
+        id="name"
+        type="text"
+        formControlName="name"
+      />
+      <label class="recipe-content-container-form__label" for="preparationTime"
+        >Preperation time:</label
+      >
+      <input
+        class="recipe-content-container-form__input"
         id="preparationTime"
         type="text"
         formControlName="preparationTime"
         placeholder="preperation time"
       />
-      <label for="description">Description:</label>
+      <label class="recipe-content-container-form__label" for="description"
+        >Description:</label
+      >
       <input
+        class="recipe-content-container-form__input"
         id="description"
         type="text"
         formControlName="description"
         placeholder="description"
       />
       <div class="ingredients-container">
-        <p class="ingredients-container__p">Ingredients</p>
-        <input />
+        <p class="ingredients-container__p">Ingredients:</p>
+        <input
+          type="text"
+          placeholder="ingredient"
+          class="ingredients-container__input"
+          *ngFor="let ingredient of ingredients; let i = index"
+          formControlName="{{ i }}"
+        />
       </div>
     </form>
   </div>
