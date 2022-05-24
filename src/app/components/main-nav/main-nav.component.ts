@@ -16,42 +16,7 @@ import { pairwise, startWith } from 'rxjs';
 export class MainNavComponent implements OnInit {
   public form!: FormGroup;
   public args: SerachFilterArgsInterface = { name: '' };
-
-  public recipes: Recipe[] = [
-    {
-      _id: '1',
-      name: 'elo3',
-      preparationTimeInMinutes: 2,
-      description: 'aasdasd11',
-      ingredients: [
-        { _id: '1212121dasdasd2', name: 'eleqweo2', quantity: '20' },
-        { _id: '1212dasdsa1212', name: 'eloqw2', quantity: '20' },
-        { _id: '121212das12', name: 'eloqweqwe2', quantity: '20' },
-      ],
-    },
-    {
-      _id: '2',
-      name: 'elo2',
-      preparationTimeInMinutes: 33,
-      description: 'aasdasd122312',
-      ingredients: [
-        { _id: '1212121dasdasd2', name: 'eqwelo2', quantity: '20' },
-        { _id: '1212dasdsa1212', name: 'elqweo2', quantity: '20' },
-        { _id: '121212das12', name: 'elo2qwe', quantity: '20' },
-      ],
-    },
-    {
-      _id: '3',
-      name: 'elo1',
-      preparationTimeInMinutes: 11,
-      description: 'aasd123123asd',
-      ingredients: [
-        { _id: '1212121dasdasd2', name: 'el23o2', quantity: '20' },
-        { _id: '1212dasdsa1212', name: 'eewqlo2', quantity: '20' },
-        { _id: '121212das12', name: 'elqweo2', quantity: '20' },
-      ],
-    },
-  ];
+  public recipes: Recipe[] = [];
 
   constructor(
     private dialog: MatDialog,
@@ -59,17 +24,22 @@ export class MainNavComponent implements OnInit {
     private endpointService: EndpointService
   ) {}
 
+  private getAllRecipes(): void {
+    this.endpointService.getAllRecipes().subscribe((recipes) => {
+      this.recipes = recipes;
+    });
+  }
+
   public gen(): void {
     this.endpointService
       .generateApiRecipe({
-        _id: '3',
         name: 'elo1',
         preparationTimeInMinutes: 11,
         description: 'aasd123123asd',
         ingredients: [
-          { _id: '1212121dasdasd2', name: 'el23o2', quantity: '20' },
-          { _id: '1212dasdsa1212', name: 'eewqlo2', quantity: '20' },
-          { _id: '121212das12', name: 'elqweo2', quantity: '20' },
+          { name: 'el23o2', quantity: '20' },
+          { name: 'eewqlo2', quantity: '20' },
+          { name: 'elqweo2', quantity: '20' },
         ],
       })
       .subscribe((resp) => {
@@ -78,6 +48,7 @@ export class MainNavComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getAllRecipes();
     this.createForm();
     this.inputChanges();
   }
@@ -103,7 +74,13 @@ export class MainNavComponent implements OnInit {
     this.openConfirmDialog(id);
   }
 
-  public editDialog(id: string): void {}
+  public editRecipe(id: string): void {
+    console.log(id);
+  }
+
+  public addNewRecipe(): void {
+    console.log('add new recipe');
+  }
 
   public openConfirmDialog(data: any): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {});

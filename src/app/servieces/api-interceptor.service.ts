@@ -6,7 +6,6 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { apiKey, url } from './serviceData';
 
 @Injectable({
   providedIn: 'root',
@@ -19,9 +18,7 @@ export class ApiInterceptorService implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     request = request.clone({
       setHeaders: {
-        'Content-Type': 'pplication/json; charset=utf-8',
-        'X-API-KEY': 'HoA',
-        'Access-Control-Allow-Origin': '*',
+        // 'X-API-KEY': 'HoA',
       },
     });
     return next.handle(request);

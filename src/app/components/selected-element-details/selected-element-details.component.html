@@ -1,1 +1,27 @@
-<p>selected-element-details works!</p>
+<div class="recipe-preview-container">
+  <p class="recipe-preview-container__p"></p>
+  <div class="recipe-content-containe">
+    <form class="recipe-content-containe-form">
+      <label for="name">Recipe name:</label>
+      <input placeholder="name" id="name" type="text" formControlName="name" />
+      <label for="preparationTime">Preperation time:</label>
+      <input
+        id="preparationTime"
+        type="text"
+        formControlName="preparationTime"
+        placeholder="preperation time"
+      />
+      <label for="description">Description:</label>
+      <input
+        id="description"
+        type="text"
+        formControlName="description"
+        placeholder="description"
+      />
+      <div class="ingredients-container">
+        <p class="ingredients-container__p">Ingredients</p>
+        <input />
+      </div>
+    </form>
+  </div>
+</div>

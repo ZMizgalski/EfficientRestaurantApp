@@ -7,7 +7,7 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  { path: '**', pathMatch: 'full', component: NotFoundComponent },
+  // { path: '**', component: NotFoundComponent },
   { path: 'recipe/:id', component: SelectedElementDetailsComponent },
 ];
 

@@ -18,7 +18,12 @@
             type="text"
             formControlName="search"
           />
-          <button class="serach-container-form__button">Add New</button>
+          <button
+            (click)="addNewRecipe()"
+            class="serach-container-form__button"
+          >
+            Add New
+          </button>
         </form>
       </div>
       <div
@@ -28,7 +33,10 @@
       >
         <p class="recipe__p">{{ recipe.name }}</p>
         <span class="recipe-button-container">
-          <button class="recipe-button-container__button-edit">
+          <button
+            (click)="editRecipe(recipe._id)"
+            class="recipe-button-container__button-edit"
+          >
             <i class="pi pi-pencil"></i>
           </button>
           <button

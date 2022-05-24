@@ -10,23 +10,26 @@ import { url } from './serviceData';
 export class EndpointService {
   constructor(private http: HttpClient) {}
 
-  public generateApiRecipe(newRecipe: Recipe): Observable<any> {
-    return this.http.post<any>(url + '/recipe', newRecipe, {});
+  public generateApiRecipe(newRecipe: any): Observable<any> {
+    return this.http.post<any>(
+      '/3b9072efed4741f58b23f962b607544f/recipe',
+      newRecipe
+    );
   }
 
   public getAllRecipes(): Observable<Recipe[]> {
-    return this.http.get<Recipe[]>(url + '/recipe');
+    return this.http.get<Recipe[]>('/3b9072efed4741f58b23f962b607544f/recipe');
   }
 
   public getRecipe(id: string): Observable<Recipe> {
-    return this.http.get<Recipe>(url + '/recipe/' + id);
+    return this.http.get<Recipe>('recipe/' + id);
   }
 
   public deleteRecipe(id: string): Observable<Recipe> {
-    return this.http.delete<Recipe>(url + '/recipe/' + id);
+    return this.http.delete<Recipe>('recipe/' + id);
   }
 
   public editRecipe(newRecipe: Recipe): Observable<Recipe> {
-    return this.http.put<Recipe>(url + '/recipe/' + newRecipe._id, newRecipe);
+    return this.http.put<Recipe>('recipe/' + newRecipe._id, newRecipe);
   }
 }
