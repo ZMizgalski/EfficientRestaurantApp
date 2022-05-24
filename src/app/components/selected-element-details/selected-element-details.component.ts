@@ -72,6 +72,7 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
     this.form.controls['description'].patchValue(recipe.description);
     this.patchIngredientsValues();
     this.disableAllInputs();
+    this.switchEditingMode();
   }
 
   private patchIngredientsValues(): void {
@@ -145,7 +146,6 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
     this.getParamRoute();
     this.createFormGroup();
     this.addAllIngredientsToRecipe();
-    this.switchEditingMode();
   }
 
   private switchEditingMode(): void {
