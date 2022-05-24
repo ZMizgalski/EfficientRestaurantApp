@@ -3,16 +3,32 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MainNavComponent } from './components/main-nav/main-nav.component';
+import { HttpClientModule } from '@angular/common/http';
+import { SelectedElementDetailsComponent } from './components/selected-element-details/selected-element-details.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
+import { HomeComponent } from './components/home/home.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { AboutAuthorComponent } from './dialogs/about-author/about-author.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MainNavComponent,
+    SelectedElementDetailsComponent,
+    NotFoundComponent,
+    HomeComponent,
+    AboutAuthorComponent,
   ],
   imports: [
+    MatDialogModule,
     BrowserModule,
-    AppRoutingModule
+    HttpClientModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

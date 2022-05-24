@@ -1,0 +1,14 @@
+<div class="main-container">
+  <div class="top-nav">
+    <p class="top-nav__p">App Name</p>
+    <button class="top-nav__button" (click)="openAboutAuthorDialog()">
+      <i class="pi pi-align-justify"></i>
+    </button>
+  </div>
+  <div class="content-container">
+    <div class="content-container-recipes-container"></div>
+    <div class="content-container-details-container">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
