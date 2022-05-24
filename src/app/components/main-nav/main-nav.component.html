@@ -1,4 +1,5 @@
 <div class="main-container">
+  <button (click)="gen()">111</button>
   <div class="top-nav">
     <p class="top-nav__p">App Name</p>
     <button class="top-nav__button" (click)="openAboutAuthorDialog()">
@@ -7,9 +8,22 @@
   </div>
   <div class="content-container">
     <div class="content-container-recipes-container">
+      <div class="serach-container">
+        <form class="serach-container-form" [formGroup]="form">
+          <input
+            class="serach-container-form__input"
+            type="text"
+            placeholder="Recipe Name"
+            id="search"
+            type="text"
+            formControlName="search"
+          />
+          <button class="serach-container-form__button">Add New</button>
+        </form>
+      </div>
       <div
         class="recipe"
-        *ngFor="let recipe of recipes"
+        *ngFor="let recipe of recipes | recipeFilter: args"
         [routerLink]="['/recipe/' + recipe._id]"
       >
         <p class="recipe__p">{{ recipe.name }}</p>

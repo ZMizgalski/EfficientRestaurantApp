@@ -5,13 +5,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MainNavComponent } from './components/main-nav/main-nav.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SelectedElementDetailsComponent } from './components/selected-element-details/selected-element-details.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { HomeComponent } from './components/home/home.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AboutAuthorComponent } from './dialogs/about-author/about-author.component';
 import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
+import { ApiInterceptorService } from './servieces/api-interceptor.service';
+import { RecipeFilterPipe } from './servieces/filters/recipe-filter.pipe';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -22,15 +25,24 @@ import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.
     HomeComponent,
     AboutAuthorComponent,
     ConfirmDialogComponent,
+    RecipeFilterPipe,
   ],
   imports: [
     MatDialogModule,
+    ReactiveFormsModule,
+    FormsModule,
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ApiInterceptorService,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
