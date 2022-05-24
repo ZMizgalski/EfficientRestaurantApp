@@ -51,18 +51,17 @@
         background: $background-color_2;
         display: flex;
         justify-content: center;
-        align-items: center;
         width: 100%;
 
 
         &-recipes-container {
-            width: 20vw;
-            background: rgb(0, 217, 255);
+            width: 30%;
+            background: $background-color_2;
         }
 
         &-details-container {
-            width: 80vh;
-            background: red;
+            width: 70%;
+            background: $background-color_3;
         }
     }
 

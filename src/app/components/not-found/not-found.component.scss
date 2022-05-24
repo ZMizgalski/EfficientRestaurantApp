@@ -1,0 +1,28 @@
+@import '../../styling/styling.scss';
+
+.not-found-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+
+    .pi {
+        font-size: 40px;
+        color: rgb(153, 27, 27);
+    }
+
+    &__header {
+        font-size: 30px;
+        margin: 10px;
+        color: $background-color_1;
+        word-wrap: break-word;
+    }
+
+    &__description {
+        color: $background-color_1;
+        word-wrap: break-word;
+        margin: 10px;
+        font-size: 20px;
+    }
+}
