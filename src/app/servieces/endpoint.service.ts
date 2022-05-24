@@ -19,14 +19,17 @@ export class EndpointService {
   }
 
   public getRecipe(id: string): Observable<Recipe> {
-    return this.http.get<Recipe>(`/${apiKey}/` + id);
+    return this.http.get<Recipe>(`/${apiKey}/recipe/` + id);
   }
 
   public deleteRecipe(id: string): Observable<Recipe> {
-    return this.http.delete<Recipe>(`/${apiKey}/` + id);
+    return this.http.delete<Recipe>(`/${apiKey}/recipe/` + id);
   }
 
   public editRecipe(newRecipe: Recipe): Observable<Recipe> {
-    return this.http.put<Recipe>(`/${apiKey}/` + newRecipe._id, newRecipe);
+    return this.http.put<Recipe>(
+      `/${apiKey}/recipe/` + newRecipe._id,
+      newRecipe
+    );
   }
 }
