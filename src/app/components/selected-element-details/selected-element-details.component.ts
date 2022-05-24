@@ -1,5 +1,6 @@
+import { SelectedItemService } from './../../servieces/selected-item.service';
 import { FormIngredient } from './../../models/form-ingredient.interface';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, take } from 'rxjs';
 import { FormGroup, FormBuilder, FormControl, FormArray } from '@angular/forms';
 import { Recipe } from './../../models/recipe.interface';
 import { EndpointService } from './../../servieces/endpoint.service';
@@ -19,16 +20,24 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
     preparationTimeInMinutes: 0,
     ingredients: [],
   });
+  public editingEnabled: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
   public ingredientsLoaded: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
   public loaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public form!: FormGroup;
+  private id!: string;
   constructor(
+    private selectedItemService: SelectedItemService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private endpointService: EndpointService,
     private router: Router
   ) {}
+
+  public get edittingMode(): BehaviorSubject<boolean> {
+    return this.selectedItemService.edittingModeSubject;
+  }
 
   private createFormGroup(): void {
     this.form = this.fb.group({
@@ -39,16 +48,30 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
+  private enableAllInputs(): void {
+    this.form.controls['name'].disable();
+    this.form.controls['preparationTime'].disable();
+    this.form.controls['description'].disable();
+    this.form.controls['ingredients'].disable();
+  }
+
+  private disableAllInputs(): void {
+    this.form.controls['name'].enable();
+    this.form.controls['preparationTime'].enable();
+    this.form.controls['description'].enable();
+    this.form.controls['ingredients'].enable();
+  }
+
   private setAllValues(recipe: Recipe): void {
     this.form.controls['name'].patchValue(recipe.name);
     this.form.controls['preparationTime'].patchValue(
       recipe.preparationTimeInMinutes
     );
     this.form.controls['description'].patchValue(recipe.description);
-    this.patchIngredients();
+    this.patchIngredientsValues();
   }
 
-  private patchIngredients(): void {
+  private patchIngredientsValues(): void {
     const patchedIngredients = this.form.controls['ingredients'].value.map(
       (item: FormIngredient, index: number) => {
         item.name = this.getRecipe.ingredients[index].name;
@@ -101,21 +124,26 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
   }
 
   private getParamRoute(): void {
-    this.route.paramMap.subscribe((params) => {
+    this.route.paramMap.pipe(take(1)).subscribe((params) => {
       const tmpId = params.get('id');
-      const id = tmpId ? tmpId : '';
-      id ? this.getHttpRecipe(id) : '';
+      this.id = tmpId ? tmpId : '';
+      this.id ? this.getHttpRecipe(this.id) : '';
     });
   }
 
   onSubmit() {
-    console.log(this.form.value);
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/recipe/' + this.id]);
+    });
+    // this.disableAllInputs();
   }
 
   ngOnInit(): void {
     this.getParamRoute();
     this.createFormGroup();
     this.addAllIngredientsToRecipe();
+
+    console.log(this.selectedItemService.edittingMode);
   }
 
   ngOnDestroy(): void {

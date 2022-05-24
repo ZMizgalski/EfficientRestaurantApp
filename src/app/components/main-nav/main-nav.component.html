@@ -26,27 +26,27 @@
           </button>
         </form>
       </div>
-      <div
-        class="recipe"
-        *ngFor="let recipe of recipes | recipeFilter: args"
-        (click)="route(recipe._id, false)"
-      >
-        <p class="recipe__p">{{ recipe.name }}</p>
-        <span class="recipe-button-container">
-          <button
-            (click)="route(recipe._id, true)"
-            class="recipe-button-container__button-edit"
-          >
-            <i class="pi pi-pencil"></i>
-          </button>
-          <button
-            class="recipe-button-container__button-delete"
-            (click)="deleteRecipe(recipe._id)"
-          >
-            <i class="pi pi-times"></i>
-          </button>
-        </span>
-      </div>
+      <span class="recipe-overlay" *ngIf="showRecipes">
+        <div class="recipe" *ngFor="let recipe of recipes | recipeFilter: args">
+          <p (click)="route(recipe._id, false)" class="recipe__p">
+            {{ recipe.name }}
+          </p>
+          <span class="recipe-button-container">
+            <button
+              (click)="route(recipe._id, true)"
+              class="recipe-button-container__button-edit"
+            >
+              <i class="pi pi-pencil"></i>
+            </button>
+            <button
+              class="recipe-button-container__button-delete"
+              (click)="deleteRecipe(recipe._id)"
+            >
+              <i class="pi pi-times"></i>
+            </button>
+          </span>
+        </div>
+      </span>
     </div>
     <div class="content-container-details-container">
       <router-outlet></router-outlet>

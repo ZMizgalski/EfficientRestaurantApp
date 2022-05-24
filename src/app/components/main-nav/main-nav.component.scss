@@ -82,6 +82,17 @@
             width: 30%;
             background: $background-color_2;
 
+            .recipe-overlay {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
             .recipe {
                 display: flex;
                 pointer-events: auto;

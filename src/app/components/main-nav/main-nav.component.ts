@@ -1,3 +1,4 @@
+import { SelectedItemService } from './../../servieces/selected-item.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SerachFilterArgsInterface } from './../../models/search-filter-args.interface';
 import { EndpointService } from './../../servieces/endpoint.service';
@@ -6,8 +7,7 @@ import { Recipe } from './../../models/recipe.interface';
 import { AboutAuthorComponent } from './../../dialogs/about-author/about-author.component';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { pairwise, startWith } from 'rxjs';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-main-nav',
@@ -16,10 +16,12 @@ import { pairwise, startWith } from 'rxjs';
 })
 export class MainNavComponent implements OnInit {
   public form!: FormGroup;
+  public showRecipes = false;
   public args: SerachFilterArgsInterface = { name: '' };
   public recipes: Recipe[] = [];
 
   constructor(
+    private selectedItemService: SelectedItemService,
     private dialog: MatDialog,
     private fb: FormBuilder,
     private router: Router,
@@ -29,6 +31,7 @@ export class MainNavComponent implements OnInit {
   private getAllRecipes(): void {
     this.endpointService.getAllRecipes().subscribe((recipes) => {
       this.recipes = recipes;
+      this.showRecipes = true;
     });
   }
 
@@ -85,18 +88,21 @@ export class MainNavComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.endpointService.deleteRecipe(data).subscribe((resp) => {
-          console.log(resp);
+          this.reloadRecipes();
         });
       }
     });
   }
 
   public route(id: string, value: boolean): void {
-    console.log(value);
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate(['/recipe/' + id], {
-        queryParams: { editing: value },
-      });
-    });
+    this.selectedItemService.edittingMode = value;
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate(['/recipe/' + id]);
+  }
+
+  private reloadRecipes(): void {
+    this.showRecipes = false;
+    this.getAllRecipes();
   }
 }
