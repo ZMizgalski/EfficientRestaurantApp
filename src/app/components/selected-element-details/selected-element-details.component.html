@@ -1,7 +1,11 @@
 <div class="recipe-preview-container">
   <p class="recipe-preview-container__p"></p>
   <div class="recipe-content-container" *ngIf="loaded | async">
-    <form class="recipe-content-container-form" [formGroup]="form">
+    <form
+      class="recipe-content-container-form"
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+    >
       <label class="recipe-content-container-form__label" for="name"
         >Recipe name:</label
       >
@@ -38,14 +42,36 @@
         *ngIf="ingredientsLoaded | async"
       >
         <p class="ingredients-container__p">Ingredients:</p>
-        <input
-          type="text"
-          placeholder="ingredient"
-          class="ingredients-container__input"
+        <ng-container
+          class="ingredients-container-ingredient"
+          formGroupName="{{ i }}"
           *ngFor="let ingredient of getIngredients.controls; let i = index"
-          formControlName="{{ i }}"
-        />
+        >
+          <label
+            class="ingredients-container-ingredient__label"
+            for="ingredientName"
+          ></label>
+          <input
+            type="text"
+            id="ingredientName"
+            placeholder="ingredient name"
+            class="ingredients-container-ingredient__input"
+            formControlName="name"
+          />
+          <label
+            class="ingredients-container-ingredient__label"
+            for="ingredientQuantity"
+          ></label>
+          <input
+            type="text"
+            id="ingredientQuantity"
+            placeholder="ingredient quantity"
+            class="ingredients-container-ingredient__input"
+            formControlName="quantity"
+          />
+        </ng-container>
       </div>
+      <button type="submit">Update</button>
     </form>
   </div>
 </div>

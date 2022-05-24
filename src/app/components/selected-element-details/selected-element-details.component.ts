@@ -1,3 +1,4 @@
+import { FormIngredient } from './../../models/form-ingredient.interface';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { FormGroup, FormBuilder, FormControl, FormArray } from '@angular/forms';
 import { Recipe } from './../../models/recipe.interface';
@@ -11,7 +12,13 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./selected-element-details.component.scss'],
 })
 export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
-  private recipe: Subject<Recipe> = new Subject<Recipe>();
+  private recipe: BehaviorSubject<Recipe> = new BehaviorSubject<Recipe>({
+    _id: '',
+    name: '',
+    description: '',
+    preparationTimeInMinutes: 0,
+    ingredients: [],
+  });
   public ingredientsLoaded: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
   public loaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -31,8 +38,32 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
+  private setAllValues(recipe: Recipe): void {
+    this.form.controls['name'].patchValue(recipe.name);
+    this.form.controls['preparationTime'].patchValue(
+      recipe.preparationTimeInMinutes
+    );
+    this.form.controls['description'].patchValue(recipe.description);
+    this.patchIngredients();
+  }
+
+  private patchIngredients(): void {
+    const patchedIngredients = this.form.controls['ingredients'].value.map(
+      (item: FormIngredient, index: number) => {
+        item.name = this.getRecipe.ingredients[index].name;
+        item.quantity = this.getRecipe.ingredients[index].quantity;
+        return item;
+      }
+    );
+    this.form.controls['ingredients'].patchValue(patchedIngredients);
+  }
+
   public get getIngredients(): FormArray {
     return this.form.get('ingredients') as FormArray;
+  }
+
+  public get getRecipe(): Recipe {
+    return this.recipe.getValue();
   }
 
   private addAllIngredientsToRecipe(): void {
@@ -41,12 +72,18 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
         this.addIngredientFormControl();
       });
       this.ingredientsLoaded.next(true);
+      this.setAllValues(value);
     });
   }
 
   private addIngredientFormControl(): void {
     const control = <FormArray>this.form.controls['ingredients'];
-    control.push(new FormControl());
+    control.push(
+      new FormGroup({
+        name: new FormControl(),
+        quantity: new FormControl(),
+      })
+    );
   }
 
   private getHttpRecipe(id: string): void {
@@ -63,6 +100,10 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
       const id = params.get('id');
       id ? this.getHttpRecipe(id) : '';
     });
+  }
+
+  onSubmit() {
+    console.log(this.form.value);
   }
 
   ngOnInit(): void {
