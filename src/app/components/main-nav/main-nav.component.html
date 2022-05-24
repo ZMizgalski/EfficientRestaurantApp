@@ -29,7 +29,7 @@
       <div
         class="recipe"
         *ngFor="let recipe of recipes | recipeFilter: args"
-        [routerLink]="['/recipe/' + recipe._id]"
+        (click)="route(recipe._id)"
       >
         <p class="recipe__p">{{ recipe.name }}</p>
         <span class="recipe-button-container">

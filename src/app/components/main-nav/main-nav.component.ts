@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { SerachFilterArgsInterface } from './../../models/search-filter-args.interface';
 import { EndpointService } from './../../servieces/endpoint.service';
 import { ConfirmDialogComponent } from './../../dialogs/confirm-dialog/confirm-dialog.component';
@@ -21,6 +22,7 @@ export class MainNavComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private fb: FormBuilder,
+    private router: Router,
     private endpointService: EndpointService
   ) {}
 
@@ -88,6 +90,12 @@ export class MainNavComponent implements OnInit {
       if (result) {
         console.log(data);
       }
+    });
+  }
+
+  public route(id: string): void {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/recipe/' + id]);
     });
   }
 }

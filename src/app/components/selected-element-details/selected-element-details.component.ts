@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder, FormControl, FormArray } from '@angular/forms';
 import { Recipe } from './../../models/recipe.interface';
 import { EndpointService } from './../../servieces/endpoint.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-selected-element-details',
@@ -24,10 +24,21 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
   public loaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public form!: FormGroup;
   constructor(
+    private router: Router,
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private endpointService: EndpointService
   ) {}
+
+  private reloadCurrentRoute(id: string): void {
+    let currentUrl = this.router.url;
+    this.router
+      .navigateByUrl('/recipe/' + id, { skipLocationChange: true })
+      .then(() => {
+        this.router.navigate([currentUrl]);
+        console.log(currentUrl);
+      });
+  }
 
   private createFormGroup(): void {
     this.form = this.fb.group({
@@ -67,6 +78,7 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
   }
 
   private addAllIngredientsToRecipe(): void {
+    this.form.controls['ingredients'].patchValue([]);
     this.recipe.subscribe((value: Recipe) => {
       value.ingredients.forEach(() => {
         this.addIngredientFormControl();
@@ -97,7 +109,8 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
 
   private getParamRoute(): void {
     this.route.paramMap.subscribe((params) => {
-      const id = params.get('id');
+      const tmpId = params.get('id');
+      const id = tmpId ? tmpId : '';
       id ? this.getHttpRecipe(id) : '';
     });
   }
