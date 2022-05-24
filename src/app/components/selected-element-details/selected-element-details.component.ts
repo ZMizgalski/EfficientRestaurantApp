@@ -24,21 +24,11 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
   public loaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public form!: FormGroup;
   constructor(
-    private router: Router,
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private endpointService: EndpointService
+    private endpointService: EndpointService,
+    private router: Router
   ) {}
-
-  private reloadCurrentRoute(id: string): void {
-    let currentUrl = this.router.url;
-    this.router
-      .navigateByUrl('/recipe/' + id, { skipLocationChange: true })
-      .then(() => {
-        this.router.navigate([currentUrl]);
-        console.log(currentUrl);
-      });
-  }
 
   private createFormGroup(): void {
     this.form = this.fb.group({
@@ -103,6 +93,9 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
       next: (response: Recipe) => {
         this.recipe.next(response);
         this.loaded.next(true);
+      },
+      error: (error) => {
+        this.router.navigate(['/not-found']);
       },
     });
   }

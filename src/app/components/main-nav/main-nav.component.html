@@ -29,12 +29,12 @@
       <div
         class="recipe"
         *ngFor="let recipe of recipes | recipeFilter: args"
-        (click)="route(recipe._id)"
+        (click)="route(recipe._id, false)"
       >
         <p class="recipe__p">{{ recipe.name }}</p>
         <span class="recipe-button-container">
           <button
-            (click)="editRecipe(recipe._id)"
+            (click)="route(recipe._id, true)"
             class="recipe-button-container__button-edit"
           >
             <i class="pi pi-pencil"></i>

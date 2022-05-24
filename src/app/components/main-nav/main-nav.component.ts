@@ -1,4 +1,4 @@
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { SerachFilterArgsInterface } from './../../models/search-filter-args.interface';
 import { EndpointService } from './../../servieces/endpoint.service';
 import { ConfirmDialogComponent } from './../../dialogs/confirm-dialog/confirm-dialog.component';
@@ -76,10 +76,6 @@ export class MainNavComponent implements OnInit {
     this.openConfirmDialog(id);
   }
 
-  public editRecipe(id: string): void {
-    console.log(id);
-  }
-
   public addNewRecipe(): void {
     console.log('add new recipe');
   }
@@ -88,14 +84,19 @@ export class MainNavComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {});
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log(data);
+        this.endpointService.deleteRecipe(data).subscribe((resp) => {
+          console.log(resp);
+        });
       }
     });
   }
 
-  public route(id: string): void {
+  public route(id: string, value: boolean): void {
+    console.log(value);
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate(['/recipe/' + id]);
+      this.router.navigate(['/recipe/' + id], {
+        queryParams: { editing: value },
+      });
     });
   }
 }
