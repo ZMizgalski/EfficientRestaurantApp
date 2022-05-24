@@ -4,7 +4,7 @@ import { BehaviorSubject, take } from 'rxjs';
 import { FormGroup, FormBuilder, FormControl, FormArray } from '@angular/forms';
 import { Recipe } from './../../models/recipe.interface';
 import { EndpointService } from './../../servieces/endpoint.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Pipe } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -20,8 +20,6 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
     preparationTimeInMinutes: 0,
     ingredients: [],
   });
-  public editingEnabled: BehaviorSubject<boolean> =
-    new BehaviorSubject<boolean>(false);
   public ingredientsLoaded: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
   public loaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -48,18 +46,22 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private enableAllInputs(): void {
+  private disableAllInputs(): void {
     this.form.controls['name'].disable();
     this.form.controls['preparationTime'].disable();
     this.form.controls['description'].disable();
-    this.form.controls['ingredients'].disable();
+    (<FormArray>this.form.get('ingredients')).controls.forEach((item) => {
+      item.disable();
+    });
   }
 
-  private disableAllInputs(): void {
+  private enableAllInputs(): void {
     this.form.controls['name'].enable();
     this.form.controls['preparationTime'].enable();
     this.form.controls['description'].enable();
-    this.form.controls['ingredients'].enable();
+    (<FormArray>this.form.get('ingredients')).controls.forEach((item) => {
+      item.enable();
+    });
   }
 
   private setAllValues(recipe: Recipe): void {
@@ -69,6 +71,7 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
     );
     this.form.controls['description'].patchValue(recipe.description);
     this.patchIngredientsValues();
+    this.disableAllInputs();
   }
 
   private patchIngredientsValues(): void {
@@ -132,18 +135,23 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate(['/recipe/' + this.id]);
-    });
-    // this.disableAllInputs();
+    this.selectedItemService.edittingMode = false;
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.disableAllInputs();
   }
 
   ngOnInit(): void {
     this.getParamRoute();
     this.createFormGroup();
     this.addAllIngredientsToRecipe();
+    this.switchEditingMode();
+  }
 
-    console.log(this.selectedItemService.edittingMode);
+  private switchEditingMode(): void {
+    if (this.selectedItemService.edittingMode) {
+      this.enableAllInputs();
+    }
   }
 
   ngOnDestroy(): void {
