@@ -1,0 +1,26 @@
+@import './styling.scss';
+
+@mixin action-button($className, $text-color: $font-color_1, $hover-text-color: $background-color_3) {
+
+    #{$className} {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 30px;
+        margin: 0 5px 0 5px;
+        min-width: 50px;
+        outline: none;
+        cursor: pointer;
+        color: $text-color;
+        border: none;
+        pointer-events: all;
+        background: transparent;
+        font-size: 18px;
+        border-radius: 5px;
+        transition: .2s ease-in-out;
+    }
+
+    #{$className}:hover {
+        background-color: rgba($color: $hover-text-color, $alpha: 1)
+    }
+}

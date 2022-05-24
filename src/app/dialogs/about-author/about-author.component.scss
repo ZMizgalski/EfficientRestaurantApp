@@ -1,0 +1,8 @@
+@import '../../styling/action-button.scss';
+@import '../../styling/styling.scss';
+
+.text {
+    color: $font-color_1;
+}
+
+@include action-button(".close-button", $font-color_1, $close);

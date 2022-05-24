@@ -1,0 +1,26 @@
+@import './styling.scss';
+
+@mixin nav-button($className, $text-color: $font-color_1, $hover-text-color: $background-color_3) {
+
+    #{$className} {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 40px;
+        min-width: 40px;
+        margin: 0 10px 0 0;
+        outline: none;
+        cursor: pointer;
+        color: $text-color;
+        border: none;
+        pointer-events: all;
+        background: transparent;
+        font-size: 20px;
+        border-radius: 100%;
+        transition: .2s ease-in-out;
+    }
+
+    #{$className}:hover {
+        background-color: rgba($color: $hover-text-color, $alpha: 0.7)
+    }
+}

@@ -1,0 +1,9 @@
+@import '../../styling/action-button.scss';
+@import '../../styling/styling.scss';
+
+::host {
+    display: flex
+}
+
+@include action-button(".close-button", $font-color_1, $close);
+@include action-button(".success-button", $font-color_1, $success);

@@ -6,7 +6,26 @@
     </button>
   </div>
   <div class="content-container">
-    <div class="content-container-recipes-container"></div>
+    <div class="content-container-recipes-container">
+      <div
+        class="recipe"
+        *ngFor="let recipe of recipes"
+        [routerLink]="['/recipe/' + recipe._id]"
+      >
+        <p class="recipe__p">{{ recipe.name }}</p>
+        <span class="recipe-button-container">
+          <button class="recipe-button-container__button-edit">
+            <i class="pi pi-pencil"></i>
+          </button>
+          <button
+            class="recipe-button-container__button-delete"
+            (click)="deleteRecipe(recipe._id)"
+          >
+            <i class="pi pi-times"></i>
+          </button>
+        </span>
+      </div>
+    </div>
     <div class="content-container-details-container">
       <router-outlet></router-outlet>
     </div>

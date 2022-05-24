@@ -11,6 +11,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { HomeComponent } from './components/home/home.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AboutAuthorComponent } from './dialogs/about-author/about-author.component';
+import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { AboutAuthorComponent } from './dialogs/about-author/about-author.compon
     NotFoundComponent,
     HomeComponent,
     AboutAuthorComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     MatDialogModule,
