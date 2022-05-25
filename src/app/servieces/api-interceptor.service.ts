@@ -1,5 +1,3 @@
-import { EndpointService } from './endpoint.service';
-import { SelectedItemService } from './selected-item.service';
 import {
   HttpEvent,
   HttpHandler,
@@ -7,7 +5,7 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { finalize, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
