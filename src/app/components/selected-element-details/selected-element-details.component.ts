@@ -198,7 +198,7 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.disableAllInputs();
-    this.selectedItemService.refhreshRecipes = false;
+
     const recipe: PayloadRecipe = {
       name: this.form.value.name,
       preparationTimeInMinutes: Number(this.form.value.preparationTime),
@@ -219,6 +219,7 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
       next: (response: Recipe) => {
         this.makeSmartRoute(response._id);
         this.selectedItemService.added = false;
+        this.selectedItemService.refhreshRecipes = true;
       },
     });
   }
@@ -228,6 +229,7 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
       next: () => {
         this.makeSmartRoute(this.id);
         this.selectedItemService.edittingMode = false;
+        this.selectedItemService.refhreshRecipes = true;
       },
     });
   }

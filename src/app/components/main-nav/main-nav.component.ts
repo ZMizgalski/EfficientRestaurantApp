@@ -18,9 +18,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class MainNavComponent implements OnInit, OnDestroy {
   public form!: FormGroup;
   private subscriptions: Subscription[] = [];
-  // public showRecipes: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
-  //   false
-  // );
   public args: SerachFilterArgsInterface = { name: '' };
   public recipes: Recipe[] = [];
 
@@ -49,46 +46,20 @@ export class MainNavComponent implements OnInit, OnDestroy {
   }
 
   private addAllSubscriptions(): void {
-    this.initializeAddedSubscription();
-    this.initializeEdditingModeSubscription();
     this.initializeRecipeRefhreshSubscription();
-  }
-
-  private initializeEdditingModeSubscription(): void {
-    this.subscriptions.push(
-      this.selectedItemService.edittingModeSubject.subscribe((value) => {
-        if (value) {
-          this.reloadRecipes();
-        }
-      })
-    );
   }
 
   private initializeRecipeRefhreshSubscription(): void {
     this.subscriptions.push(
       this.selectedItemService.refhreshRecipesSubject.subscribe((value) => {
-        if (value) {
-          this.reloadRecipes();
-        }
-      })
-    );
-  }
-
-  private initializeAddedSubscription(): void {
-    this.subscriptions.push(
-      this.selectedItemService.addedSubject.subscribe((value) => {
-        if (value) {
-          this.reloadRecipes();
-        }
+        value ? this.getAllRecipes() : '';
       })
     );
   }
 
   private getAllRecipes(): void {
-    this.selectedItemService.refhreshRecipes = false;
     this.endpointService.getAllRecipes().subscribe((recipes) => {
       this.recipes = recipes;
-      this.selectedItemService.refhreshRecipes = true;
     });
   }
 
@@ -143,6 +114,7 @@ export class MainNavComponent implements OnInit, OnDestroy {
   public addNewRecipe(): void {
     this.selectedItemService.added = true;
     this.selectedItemService.edittingMode = false;
+    this.selectedItemService.refhreshRecipes = false;
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
     this.router.navigate(['recipe/AddNew']);
@@ -159,11 +131,11 @@ export class MainNavComponent implements OnInit, OnDestroy {
 
   private deleteRecipeEndpoint(id: string): void {
     this.endpointService.deleteRecipe(id).subscribe(() => {
-      this.reloadRecipes();
+      this.selectedItemService.refhreshRecipes = true;
     });
   }
 
-  public route(id: string, value: boolean): void {
+  public editRoute(id: string, value: boolean): void {
     this.selectedItemService.edittingMode = value;
     this.selectedItemService.added = false;
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -171,14 +143,14 @@ export class MainNavComponent implements OnInit, OnDestroy {
     this.router.navigate(['/recipe/' + id]);
   }
 
-  public route2(id: string): void {
+  public previewRoute(id: string): void {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
     this.router.navigate(['/recipe/' + id]);
   }
 
-  private reloadRecipes(): void {
-    this.selectedItemService.refhreshRecipes = false;
-    this.getAllRecipes();
-  }
+  // private reloadRecipes(): void {
+  //   this.selectedItemService.refhreshRecipes = false;
+  //   this.getAllRecipes();
+  // }
 }

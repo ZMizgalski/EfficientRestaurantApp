@@ -31,14 +31,14 @@
       {{ showRecipes | async }}
       <span class="recipe-overlay" *ngIf="showRecipes | async">
         <div class="recipe" *ngFor="let recipe of recipes | recipeFilter: args">
-          <span class="recipe-click-overlay" (click)="route2(recipe._id)">
+          <span class="recipe-click-overlay" (click)="previewRoute(recipe._id)">
             <p class="recipe__p">
               {{ recipe.name }}
             </p>
             <span class="recipe-button-container">
               <button
                 type="button"
-                (click)="route(recipe._id, true)"
+                (click)="editRoute(recipe._id, true)"
                 class="recipe-button-container__button-edit"
               >
                 <i class="pi pi-pencil"></i>
