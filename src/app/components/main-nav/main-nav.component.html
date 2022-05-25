@@ -26,12 +26,10 @@
           </button>
         </form>
       </div>
-      <span
-        class="recipe-overlay"
-        *ngIf="
-          (showRecipes | async) || (added | async) || (edittingMode | async)
-        "
-      >
+      {{ edittingMode | async }}
+      {{ added | async }}
+      {{ showRecipes | async }}
+      <span class="recipe-overlay" *ngIf="showRecipes | async">
         <div class="recipe" *ngFor="let recipe of recipes | recipeFilter: args">
           <span class="recipe-click-overlay" (click)="route2(recipe._id)">
             <p class="recipe__p">

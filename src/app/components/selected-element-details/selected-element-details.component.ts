@@ -11,13 +11,8 @@ import {
 } from '@angular/forms';
 import { Recipe } from './../../models/recipe.interface';
 import { EndpointService } from './../../servieces/endpoint.service';
-import { Component, OnDestroy, OnInit, Pipe } from '@angular/core';
-import {
-  ActivatedRoute,
-  NavigationEnd,
-  NavigationStart,
-  Router,
-} from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-selected-element-details',
@@ -131,10 +126,7 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
   }
 
   public get getIngredientsSize(): Number {
-    if (!this.getIngredients) {
-      return 0;
-    }
-    return this.getIngredients.length;
+    return !this.getIngredients ? 0 : this.getIngredients.length;
   }
 
   private addAllIngredientsToRecipe(): void {
@@ -144,7 +136,6 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
         value.ingredients.forEach(() => {
           this.addIngredientFormControl();
         });
-
         this.setAllValues(value);
       });
     }
@@ -207,45 +198,44 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.disableAllInputs();
-    this.selectedItemService.edittingMode
-      ? this.updateRecipe()
-      : this.addNewRecipe();
-    this.selectedItemService.edittingMode = false;
-    this.selectedItemService.added = false;
-  }
-
-  private addNewRecipe(): void {
+    this.selectedItemService.refhreshRecipes = false;
     const recipe: PayloadRecipe = {
       name: this.form.value.name,
       preparationTimeInMinutes: Number(this.form.value.preparationTime),
       description: this.form.value.description,
       ingredients: this.form.value.ingredients,
     };
+    this.makeRecipeRequest(recipe);
+  }
+
+  private makeRecipeRequest(recipe: PayloadRecipe): void {
+    this.selectedItemService.edittingMode
+      ? this.updateRecipe(recipe)
+      : this.addNewRecipe(recipe);
+  }
+
+  private addNewRecipe(recipe: PayloadRecipe): void {
     this.endpointService.generateApiRecipe(recipe).subscribe({
       next: (response: Recipe) => {
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-        this.router.onSameUrlNavigation = 'reload';
-        this.router.navigate(['recipe/' + response._id]);
+        this.makeSmartRoute(response._id);
         this.selectedItemService.added = false;
       },
     });
   }
 
-  private updateRecipe(): void {
-    const recipe: PayloadRecipe = {
-      name: this.form.value.name,
-      preparationTimeInMinutes: Number(this.form.value.preparationTime),
-      description: this.form.value.description,
-      ingredients: this.form.value.ingredients,
-    };
+  private updateRecipe(recipe: PayloadRecipe): void {
     this.endpointService.editRecipe(recipe, this.id).subscribe({
       next: () => {
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-        this.router.onSameUrlNavigation = 'reload';
-        this.router.navigate(['recipe/' + this.id]);
+        this.makeSmartRoute(this.id);
         this.selectedItemService.edittingMode = false;
       },
     });
+  }
+
+  private makeSmartRoute(id: string): void {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate(['recipe/' + id]);
   }
 
   public deleteIngredient(index: number): void {

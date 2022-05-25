@@ -18,9 +18,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class MainNavComponent implements OnInit, OnDestroy {
   public form!: FormGroup;
   private subscriptions: Subscription[] = [];
-  public showRecipes: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
-    false
-  );
+  // public showRecipes: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+  //   false
+  // );
   public args: SerachFilterArgsInterface = { name: '' };
   public recipes: Recipe[] = [];
 
@@ -36,6 +36,10 @@ export class MainNavComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
+  public get showRecipes(): BehaviorSubject<boolean> {
+    return this.selectedItemService.refhreshRecipesSubject;
+  }
+
   public get edittingMode(): BehaviorSubject<boolean> {
     return this.selectedItemService.edittingModeSubject;
   }
@@ -47,11 +51,22 @@ export class MainNavComponent implements OnInit, OnDestroy {
   private addAllSubscriptions(): void {
     this.initializeAddedSubscription();
     this.initializeEdditingModeSubscription();
+    this.initializeRecipeRefhreshSubscription();
   }
 
   private initializeEdditingModeSubscription(): void {
     this.subscriptions.push(
       this.selectedItemService.edittingModeSubject.subscribe((value) => {
+        if (value) {
+          this.reloadRecipes();
+        }
+      })
+    );
+  }
+
+  private initializeRecipeRefhreshSubscription(): void {
+    this.subscriptions.push(
+      this.selectedItemService.refhreshRecipesSubject.subscribe((value) => {
         if (value) {
           this.reloadRecipes();
         }
@@ -70,10 +85,10 @@ export class MainNavComponent implements OnInit, OnDestroy {
   }
 
   private getAllRecipes(): void {
+    this.selectedItemService.refhreshRecipes = false;
     this.endpointService.getAllRecipes().subscribe((recipes) => {
-      this.showRecipes.next(false);
       this.recipes = recipes;
-      this.showRecipes.next(true);
+      this.selectedItemService.refhreshRecipes = true;
     });
   }
 
@@ -121,7 +136,7 @@ export class MainNavComponent implements OnInit, OnDestroy {
   public deleteRecipe(id: string): void {
     this.selectedItemService.added = false;
     this.selectedItemService.edittingMode = false;
-    this.showRecipes.next(false);
+    this.selectedItemService.refhreshRecipes = false;
     this.openConfirmDialog(id);
   }
 
@@ -136,11 +151,9 @@ export class MainNavComponent implements OnInit, OnDestroy {
   public openConfirmDialog(id: string): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {});
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.deleteRecipeEndpoint(id);
-      } else {
-        this.showRecipes.next(true);
-      }
+      result
+        ? this.deleteRecipeEndpoint(id)
+        : (this.selectedItemService.refhreshRecipes = true);
     });
   }
 
@@ -165,7 +178,7 @@ export class MainNavComponent implements OnInit, OnDestroy {
   }
 
   private reloadRecipes(): void {
-    this.showRecipes.next(false);
+    this.selectedItemService.refhreshRecipes = false;
     this.getAllRecipes();
   }
 }

@@ -12,6 +12,21 @@ export class SelectedItemService {
     false
   );
 
+  private refhreshRecipesLocal: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+
+  public get refhreshRecipesSubject(): BehaviorSubject<boolean> {
+    return this.refhreshRecipesLocal;
+  }
+
+  public get refhreshRecipes(): boolean {
+    return this.refhreshRecipesLocal.getValue();
+  }
+
+  public set refhreshRecipes(rec: boolean) {
+    this.refhreshRecipesLocal.next(rec);
+  }
+
   public get addedSubject(): BehaviorSubject<boolean> {
     return this.addedLocal;
   }
