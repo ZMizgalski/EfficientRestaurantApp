@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import { SelectedItemService } from './../../servieces/selected-item.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SerachFilterArgsInterface } from './../../models/search-filter-args.interface';
@@ -5,7 +6,7 @@ import { EndpointService } from './../../servieces/endpoint.service';
 import { ConfirmDialogComponent } from './../../dialogs/confirm-dialog/confirm-dialog.component';
 import { Recipe } from './../../models/recipe.interface';
 import { AboutAuthorComponent } from './../../dialogs/about-author/about-author.component';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -14,8 +15,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   templateUrl: './main-nav.component.html',
   styleUrls: ['./main-nav.component.scss'],
 })
-export class MainNavComponent implements OnInit {
+export class MainNavComponent implements OnInit, OnDestroy {
   public form!: FormGroup;
+  private subscriptions: Subscription[] = [];
   public showRecipes = false;
   public args: SerachFilterArgsInterface = { name: '' };
   public recipes: Recipe[] = [];
@@ -27,6 +29,20 @@ export class MainNavComponent implements OnInit {
     private router: Router,
     private endpointService: EndpointService
   ) {}
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
+  private addAllSubscriptions(): void {
+    this.subscriptions.push(
+      this.selectedItemService.addedSubject.subscribe((value) => {
+        if (value) {
+          this.reloadRecipes();
+        }
+      })
+    );
+  }
 
   private getAllRecipes(): void {
     this.endpointService.getAllRecipes().subscribe((recipes) => {
@@ -56,6 +72,7 @@ export class MainNavComponent implements OnInit {
     this.getAllRecipes();
     this.createForm();
     this.inputChanges();
+    this.addAllSubscriptions();
   }
 
   private createForm(): void {
@@ -82,6 +99,9 @@ export class MainNavComponent implements OnInit {
   public addNewRecipe(): void {
     this.selectedItemService.added = true;
     this.selectedItemService.edittingMode = false;
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate([this.router.url]);
   }
 
   public openConfirmDialog(data: any): void {

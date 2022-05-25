@@ -2,7 +2,13 @@ import { PayloadRecipe } from './../../models/payload-recipe.interface';
 import { SelectedItemService } from './../../servieces/selected-item.service';
 import { FormIngredient } from './../../models/form-ingredient.interface';
 import { BehaviorSubject, Subscription, take } from 'rxjs';
-import { FormGroup, FormBuilder, FormControl, FormArray } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  FormControl,
+  FormArray,
+  Validators,
+} from '@angular/forms';
 import { Recipe } from './../../models/recipe.interface';
 import { EndpointService } from './../../servieces/endpoint.service';
 import { Component, OnDestroy, OnInit, Pipe } from '@angular/core';
@@ -45,23 +51,28 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
 
   private createFormGroup(): void {
     this.form = this.fb.group({
-      name: new FormControl(),
-      preparationTime: new FormControl(),
-      description: new FormControl(),
+      name: new FormControl('', [Validators.required]),
+      preparationTime: new FormControl(0, [Validators.required]),
+      description: new FormControl('', [Validators.required]),
       ingredients: this.fb.array([]),
     });
   }
 
   private addAllSubscriptions(): void {
     this.subscriptions.push(
-      this.selectedItemService.addedSubject.subscribe((item) => {
-        this.switchEditingMode();
+      this.selectedItemService.addedSubject.subscribe((value) => {
+        if (value) {
+          this.form.reset();
+          this.enableAllInputs();
+        }
       })
     );
 
     this.subscriptions.push(
-      this.selectedItemService.edittingModeSubject.subscribe((item) => {
-        this.switchEditingMode();
+      this.selectedItemService.edittingModeSubject.subscribe((value) => {
+        if (value) {
+          this.enableAllInputs();
+        }
       })
     );
   }
@@ -116,23 +127,27 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
 
   private addAllIngredientsToRecipe(): void {
     this.form.controls['ingredients'].patchValue([]);
-    this.recipe.subscribe((value: Recipe) => {
-      value.ingredients.forEach(() => {
-        this.addIngredientFormControl();
+
+    if (!this.selectedItemService.added) {
+      this.recipe.subscribe((value: Recipe) => {
+        value.ingredients.forEach(() => {
+          this.addIngredientFormControl();
+        });
+        this.setAllValues(value);
       });
-      this.ingredientsLoaded.next(true);
-      this.setAllValues(value);
-    });
+    }
   }
 
-  private addIngredientFormControl(): void {
+  public addIngredientFormControl(): void {
+    this.ingredientsLoaded.next(false);
     const control = <FormArray>this.form.controls['ingredients'];
     control.push(
       new FormGroup({
-        name: new FormControl(),
-        quantity: new FormControl(),
+        name: new FormControl('', Validators.required),
+        quantity: new FormControl('', Validators.required),
       })
     );
+    this.ingredientsLoaded.next(true);
   }
 
   private getHttpRecipe(id: string): void {
@@ -160,7 +175,23 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
     this.disableAllInputs();
-    this.updateRecipe();
+    this.selectedItemService.edittingMode
+      ? this.updateRecipe()
+      : this.addNewRecipe();
+  }
+
+  private addNewRecipe(): void {
+    const recipe: PayloadRecipe = {
+      name: this.form.value.name,
+      preparationTimeInMinutes: Number(this.form.value.preparationTime),
+      description: this.form.value.description,
+      ingredients: this.form.value.ingredients,
+    };
+    this.endpointService.generateApiRecipe(recipe).subscribe({
+      next: () => {
+        this.selectedItemService.added = true;
+      },
+    });
   }
 
   private updateRecipe(): void {
@@ -179,15 +210,6 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
     this.getParamRoute();
     this.createFormGroup();
     this.addAllIngredientsToRecipe();
-  }
-
-  private switchEditingMode(): void {
-    if (
-      this.selectedItemService.edittingMode ||
-      this.selectedItemService.added
-    ) {
-      this.enableAllInputs();
-    }
   }
 
   ngOnDestroy(): void {

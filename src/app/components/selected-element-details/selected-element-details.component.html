@@ -36,12 +36,14 @@
         formControlName="description"
         placeholder="description"
       />
+
       <div
         class="ingredients-container"
         formArrayName="ingredients"
         *ngIf="ingredientsLoaded | async"
       >
         <p class="ingredients-container__p">Ingredients:</p>
+
         <ng-container
           class="ingredients-container-ingredient"
           formGroupName="{{ i }}"
@@ -74,5 +76,9 @@
       <button *ngIf="added | async" type="submit">Add</button>
       <button *ngIf="edittingMode | async" type="submit">Update</button>
     </form>
+
+    <button *ngIf="added | async" (click)="addIngredientFormControl()">
+      Add Ingriedients
+    </button>
   </div>
 </div>
