@@ -82,6 +82,29 @@ describe('SelectedElementDetailsComponent', () => {
         component['enableAllInputs']();
       }
     });
+    const name = component.form.get('name');
+    const preparationTime = component.form.get('preparationTime');
+    const description = component.form.get('description');
+    for (let i = 0; i < 2; i++) {
+      (<FormArray>component.form.controls['ingredients']).push(
+        new FormGroup({
+          name: new FormControl(''),
+          quantity: new FormControl(''),
+        })
+      );
+    }
+    component['enableAllInputs']();
+    (<FormArray>component.form.get('ingredients')).controls.forEach((item) => {
+      expect(item?.enabled).toBe(true);
+      expect(item?.value).toEqual({ name: '', quantity: '' });
+    });
+    expect(name?.enabled).toBe(true);
+    expect(preparationTime?.enabled).toBe(true);
+    expect(description?.enabled).toBe(true);
+
+    expect(name?.value).toEqual(null);
+    expect(preparationTime?.value).toEqual(null);
+    expect(description?.value).toEqual(null);
   });
 
   it('should disableAllInputs', () => {

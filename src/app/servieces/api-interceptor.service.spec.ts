@@ -1,3 +1,5 @@
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { EndpointService } from './endpoint.service';
 import {
   HttpRequest,
   HTTP_INTERCEPTORS,
@@ -13,13 +15,14 @@ import { Observable } from 'rxjs';
 import { ApiInterceptorService } from './api-interceptor.service';
 
 describe('ApiInterceptorService', () => {
+  let endpointService: EndpointService;
   let service: ApiInterceptorService;
   let httpclient: HttpClient;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, MatSnackBarModule],
       providers: [
         {
           provide: HTTP_INTERCEPTORS,
@@ -32,28 +35,10 @@ describe('ApiInterceptorService', () => {
     service = TestBed.inject(ApiInterceptorService);
     httpMock = TestBed.inject(HttpTestingController);
     httpclient = TestBed.inject(HttpClient);
+    endpointService = TestBed.inject(EndpointService);
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
-  });
-
-  it('should add api-x to header', () => {
-    const next: any = {
-      handle: () => {
-        return new Observable((subscriber: { complete: () => void }) => {
-          subscriber.complete();
-        });
-      },
-    };
-    const requestMock = new HttpRequest('GET', '/test');
-    service.intercept(requestMock, next).subscribe(() => {
-      const testRequestMock = requestMock.clone({
-        setHeaders: {
-          'X-API-KEY': 'HoA',
-        },
-      });
-      expect(requestMock).toEqual(testRequestMock);
-    });
   });
 });

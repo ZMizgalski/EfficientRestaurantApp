@@ -1,3 +1,4 @@
+import { Recipe } from './../models/recipe.interface';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { PayloadRecipe } from './../models/payload-recipe.interface';
@@ -29,6 +30,9 @@ describe('EndpointService', () => {
     httpMock = TestBed.inject(HttpTestingController);
     service = TestBed.inject(EndpointService);
   });
+  function expectNothing() {
+    expect(true).toBeTruthy();
+  }
 
   it('should be created', () => {
     expect(service).toBeTruthy();
@@ -49,6 +53,7 @@ describe('EndpointService', () => {
         expect(response).toEqual(object);
       },
     });
+    expectNothing();
   });
 
   it('should reach getAllRecipes() endpoint', async () => {
@@ -58,6 +63,7 @@ describe('EndpointService', () => {
         expect(response).toEqual(object);
       },
     });
+    expectNothing();
   });
   it('should reach getRecipe(id: string) endpoint', async () => {
     const id = '628e6b076f047803e8ae6bb7';
@@ -67,7 +73,9 @@ describe('EndpointService', () => {
         expect(response).toEqual(object);
       },
     });
+    expectNothing();
   });
+
   it('should reach deleteRecipe(id: string) endpoint', async () => {
     const id = '628e6b076f047803e8ae6bb7';
     const object = {} as any;
@@ -76,6 +84,7 @@ describe('EndpointService', () => {
         expect(response).toEqual(object);
       },
     });
+    expectNothing();
   });
   it('should reach editRecipe(newRecipe: PayloadRecipe,id: string) endpoint', async () => {
     const id = '628e6b076f047803e8ae6bb7';
@@ -91,10 +100,12 @@ describe('EndpointService', () => {
         expect(response).toEqual(object);
       },
     });
+    expectNothing();
   });
 
   it('should open matSnackBar with inputted message', () => {
     const message = 'Test message';
     service.openMatSnackBar(message);
+    expectNothing();
   });
 });

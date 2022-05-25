@@ -8,7 +8,7 @@ import { HourMinutesPipe } from './../../servieces/filters/hour-minutes.pipe';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MainNavComponent } from './main-nav.component';
 import {
@@ -50,7 +50,6 @@ describe('MainNavComponent', () => {
     selectedItemService = TestBed.inject(SelectedItemService);
     httpClient = TestBed.inject(HttpClient);
     httpMock = TestBed.inject(HttpTestingController);
-    service = TestBed.inject(EndpointService);
     service = TestBed.inject(EndpointService);
     router = TestBed.inject(Router);
     router.initialNavigation();
