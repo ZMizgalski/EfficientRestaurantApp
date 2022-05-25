@@ -108,8 +108,8 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
 
   private extractPreparationTime(data: string): number {
     const arr = data.split('h');
-    const h = arr[0] ? Number(arr[0]) : 0;
-    const m = arr[1] ? Number(arr[1].replace('m', '')) : 0;
+    const h = arr[0] ? Number(arr[0].replace(/\D/g, '')) : 0;
+    const m = arr[1] ? Number(arr[1].replace('m', '').replace(/\D/g, '')) : 0;
     return h * 60 + m;
   }
 

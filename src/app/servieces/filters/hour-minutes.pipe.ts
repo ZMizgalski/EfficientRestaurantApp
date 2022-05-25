@@ -8,6 +8,7 @@ export class HourMinutesPipe implements PipeTransform {
     if (!value) {
       return '0h 0m';
     }
+
     if (isNaN(Number(value))) {
       const arr = value.toString().split('m');
       const h = arr[0] ? arr[0] : '';
@@ -17,7 +18,6 @@ export class HourMinutesPipe implements PipeTransform {
 
     let hours = Math.floor(Number(value) / 60);
     let minutes = Math.floor(Number(value) % 60);
-    console.log(hours + ' h ' + minutes + ' m');
     return hours + 'h ' + minutes + 'm';
   }
 }
