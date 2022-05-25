@@ -281,7 +281,7 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
 
   private addNewRecipe(recipe: PayloadRecipe): void {
     this.endpointService.generateApiRecipe(recipe).subscribe({
-      next: (response: Recipe) => {
+      next: (response: any) => {
         this.makeSmartRoute(response._id);
         this.selectedItemService.added = false;
         this.selectedItemService.refhreshRecipes = true;

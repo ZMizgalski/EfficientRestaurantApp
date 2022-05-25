@@ -19,8 +19,10 @@ export class EndpointService {
     });
   }
 
-  public generateApiRecipe(newRecipe: any): Observable<any> {
-    return this.http.post<any>(`/${apiKey}/recipe`, newRecipe);
+  public generateApiRecipe(
+    newRecipe: PayloadRecipe
+  ): Observable<PayloadRecipe> {
+    return this.http.post<PayloadRecipe>(`/${apiKey}/recipe`, newRecipe);
   }
 
   public getAllRecipes(): Observable<Recipe[]> {
