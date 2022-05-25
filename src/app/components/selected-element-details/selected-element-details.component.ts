@@ -12,7 +12,12 @@ import {
 import { Recipe } from './../../models/recipe.interface';
 import { EndpointService } from './../../servieces/endpoint.service';
 import { Component, OnDestroy, OnInit, Pipe } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  NavigationStart,
+  Router,
+} from '@angular/router';
 
 @Component({
   selector: 'app-selected-element-details',
@@ -127,7 +132,6 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
 
   private addAllIngredientsToRecipe(): void {
     this.form.controls['ingredients'].patchValue([]);
-
     if (!this.selectedItemService.added) {
       this.recipe.subscribe((value: Recipe) => {
         value.ingredients.forEach(() => {
@@ -162,11 +166,26 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
+  private initalizeEmptyRecipe(): void {
+    this.recipe.next({
+      _id: '',
+      name: '',
+      description: '',
+      preparationTimeInMinutes: 0,
+      ingredients: [],
+    });
+    this.loaded.next(true);
+  }
+
   private getParamRoute(): void {
     this.route.paramMap.pipe(take(1)).subscribe((params) => {
       const tmpId = params.get('id');
       this.id = tmpId ? tmpId : '';
-      this.id ? this.getHttpRecipe(this.id) : '';
+      this.id
+        ? this.id !== 'AddNew'
+          ? this.getHttpRecipe(this.id)
+          : this.initalizeEmptyRecipe()
+        : '';
     });
   }
 
@@ -188,8 +207,11 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
       ingredients: this.form.value.ingredients,
     };
     this.endpointService.generateApiRecipe(recipe).subscribe({
-      next: () => {
-        this.selectedItemService.added = true;
+      next: (response: Recipe) => {
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate(['recipe/' + response._id]);
+        this.selectedItemService.added = false;
       },
     });
   }
@@ -204,6 +226,16 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
     this.endpointService.editRecipe(recipe, this.id).subscribe({
       next: () => {},
     });
+  }
+
+  public deleteIngredient(index: number): void {
+    console.log(this.getIngredients.controls[index]);
+  }
+
+  public cancelOperationOnRecipe(): void {
+    this.selectedItemService.added = false;
+    this.selectedItemService.edittingMode = false;
+    this.disableAllInputs();
   }
 
   ngOnInit(): void {

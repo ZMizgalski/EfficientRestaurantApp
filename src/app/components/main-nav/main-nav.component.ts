@@ -101,7 +101,7 @@ export class MainNavComponent implements OnInit, OnDestroy {
     this.selectedItemService.edittingMode = false;
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
-    this.router.navigate([this.router.url]);
+    this.router.navigate(['recipe/AddNew']);
   }
 
   public openConfirmDialog(data: any): void {

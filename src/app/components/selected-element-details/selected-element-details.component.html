@@ -60,6 +60,7 @@
             class="ingredients-container-ingredient__input"
             formControlName="name"
           />
+
           <label
             class="ingredients-container-ingredient__label"
             for="ingredientQuantity"
@@ -71,8 +72,23 @@
             class="ingredients-container-ingredient__input"
             formControlName="quantity"
           />
+          <button
+            *ngIf="(added | async) || (edittingMode | async)"
+            (click)="deleteIngredient(i)"
+            type="button"
+            class="ingredients-container-ingredient__button"
+          >
+            <i class="pi pi-times"></i>
+          </button>
         </ng-container>
       </div>
+      <button
+        (click)="cancelOperationOnRecipe()"
+        *ngIf="(added | async) || (edittingMode | async)"
+        type="button"
+      >
+        Cancel
+      </button>
       <button *ngIf="added | async" type="submit">Add</button>
       <button *ngIf="edittingMode | async" type="submit">Update</button>
     </form>

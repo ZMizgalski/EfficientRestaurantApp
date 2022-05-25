@@ -34,12 +34,14 @@
             </p>
             <span class="recipe-button-container">
               <button
+                type="button"
                 (click)="route(recipe._id, true)"
                 class="recipe-button-container__button-edit"
               >
                 <i class="pi pi-pencil"></i>
               </button>
               <button
+                type="button"
                 class="recipe-button-container__button-delete"
                 (click)="deleteRecipe(recipe._id)"
               >
