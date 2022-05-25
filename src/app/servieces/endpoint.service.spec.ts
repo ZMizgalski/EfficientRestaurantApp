@@ -1,3 +1,4 @@
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { PayloadRecipe } from './../models/payload-recipe.interface';
 import { HttpClient } from '@angular/common/http';
@@ -16,7 +17,11 @@ describe('EndpointService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, MatSnackBarModule],
+      imports: [
+        HttpClientTestingModule,
+        MatSnackBarModule,
+        BrowserAnimationsModule,
+      ],
     });
     httpClient = TestBed.inject(HttpClient);
     httpMock = TestBed.inject(HttpTestingController);
@@ -27,25 +32,67 @@ describe('EndpointService', () => {
     expect(service).toBeTruthy();
   });
 
-  // it('should reach generateApiRecipe(newRecipe: any) endpoint', async () => {
-  //   const recipe: PayloadRecipe = {
-  //     name: '1',
-  //     description: '1',
-  //     preparationTimeInMinutes: 10,
-  //     ingredients: [{ name: '1', quantity: '1' }],
-  //   };
+  it('should reach generateApiRecipe(newRecipe: any) endpoint', async () => {
+    const recipe: PayloadRecipe = {
+      name: '1',
+      description: '1',
+      preparationTimeInMinutes: 10,
+      ingredients: [{ name: '1', quantity: '1' }],
+    };
 
-  //   const object = {} as any;
+    const object = {} as any;
 
-  //   service.generateApiRecipe(recipe).subscribe({
-  //     next: (response) => {
-  //       expect(response).toEqual(object);
-  //     },
-  //   });
-  // });
+    service.generateApiRecipe(recipe).subscribe({
+      next: (response) => {
+        expect(response).toEqual(object);
+      },
+    });
+  });
 
-  // it('should reach getAllRecipes() endpoint', async () => {});
-  // it('should reach getRecipe(id: string) endpoint', async () => {});
-  // it('should reach deleteRecipe(id: string) endpoint', async () => {});
-  // it('should reach editRecipe(newRecipe: PayloadRecipe,id: string) endpoint', async () => {});
+  it('should reach getAllRecipes() endpoint', async () => {
+    const object = {} as any;
+    service.getAllRecipes().subscribe({
+      next: (response) => {
+        expect(response).toEqual(object);
+      },
+    });
+  });
+  it('should reach getRecipe(id: string) endpoint', async () => {
+    const id = '628e6b076f047803e8ae6bb7';
+    const object = {} as any;
+    service.getRecipe(id).subscribe({
+      next: (response) => {
+        expect(response).toEqual(object);
+      },
+    });
+  });
+  it('should reach deleteRecipe(id: string) endpoint', async () => {
+    const id = '628e6b076f047803e8ae6bb7';
+    const object = {} as any;
+    service.deleteRecipe(id).subscribe({
+      next: (response) => {
+        expect(response).toEqual(object);
+      },
+    });
+  });
+  it('should reach editRecipe(newRecipe: PayloadRecipe,id: string) endpoint', async () => {
+    const id = '628e6b076f047803e8ae6bb7';
+    const object = {} as any;
+    const recipe: PayloadRecipe = {
+      name: '1',
+      description: '1',
+      preparationTimeInMinutes: 10,
+      ingredients: [{ name: '1', quantity: '1' }],
+    };
+    service.editRecipe(recipe, id).subscribe({
+      next: (response) => {
+        expect(response).toEqual(object);
+      },
+    });
+  });
+
+  it('should open matSnackBar with inputted message', () => {
+    const message = 'Test message';
+    service.openMatSnackBar(message);
+  });
 });
