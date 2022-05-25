@@ -1,4 +1,3 @@
-import { Recipe } from './../../models/recipe.interface';
 import { FormIngredient } from './../../models/form-ingredient.interface';
 import { SelectedItemService } from './../../servieces/selected-item.service';
 import { HourMinutesPipe } from './../../servieces/filters/hour-minutes.pipe';
@@ -7,7 +6,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   ReactiveFormsModule,
-  FormBuilder,
   FormArray,
   FormGroup,
   FormControl,
@@ -15,8 +13,6 @@ import {
 
 import { SelectedElementDetailsComponent } from './selected-element-details.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Ingredient } from 'src/app/models';
-import { Observable } from 'rxjs';
 
 describe('SelectedElementDetailsComponent', () => {
   let component: SelectedElementDetailsComponent;
@@ -126,5 +122,14 @@ describe('SelectedElementDetailsComponent', () => {
     expect(name?.enabled).toBe(false);
     expect(preparationTime?.enabled).toBe(false);
     expect(description?.enabled).toBe(false);
+  });
+
+  it('should addIngredientFormControl', () => {
+    const ingredient: FormIngredient = { name: '', quantity: '' };
+    expect(component.ingredientsLoaded.getValue()).toBeFalsy();
+    component.addIngredientFormControl();
+    component.form.controls['ingredients'];
+    expect(component.form.controls['ingredients'].value).toEqual([ingredient]);
+    expect(component.ingredientsLoaded.getValue()).toBeTruthy();
   });
 });

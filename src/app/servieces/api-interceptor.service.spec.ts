@@ -1,16 +1,11 @@
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { EndpointService } from './endpoint.service';
-import {
-  HttpRequest,
-  HTTP_INTERCEPTORS,
-  HttpClient,
-} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { Observable } from 'rxjs';
 
 import { ApiInterceptorService } from './api-interceptor.service';
 
