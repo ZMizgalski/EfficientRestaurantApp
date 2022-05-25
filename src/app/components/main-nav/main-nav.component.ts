@@ -6,7 +6,12 @@ import { EndpointService } from './../../servieces/endpoint.service';
 import { ConfirmDialogComponent } from './../../dialogs/confirm-dialog/confirm-dialog.component';
 import { Recipe } from './../../models/recipe.interface';
 import { AboutAuthorComponent } from './../../dialogs/about-author/about-author.component';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -14,6 +19,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   selector: 'app-main-nav',
   templateUrl: './main-nav.component.html',
   styleUrls: ['./main-nav.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainNavComponent implements OnInit, OnDestroy {
   public form!: FormGroup;

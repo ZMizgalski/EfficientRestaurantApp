@@ -11,13 +11,19 @@ import {
 } from '@angular/forms';
 import { Recipe } from './../../models/recipe.interface';
 import { EndpointService } from './../../servieces/endpoint.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-selected-element-details',
   templateUrl: './selected-element-details.component.html',
   styleUrls: ['./selected-element-details.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
   private recipe: BehaviorSubject<Recipe> = new BehaviorSubject<Recipe>({
