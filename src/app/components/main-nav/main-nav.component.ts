@@ -16,6 +16,7 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-main-nav',
@@ -75,8 +76,8 @@ export class MainNavComponent implements OnInit, OnDestroy {
           'Succesfully downlaoded all recipes'
         );
       },
-      error: (response) => {
-        this.endpointService.openMatSnackBar(response);
+      error: (response: HttpErrorResponse) => {
+        this.endpointService.openMatSnackBar(response.message);
       },
     });
   }
@@ -125,8 +126,8 @@ export class MainNavComponent implements OnInit, OnDestroy {
           `Succesfully deleted reciep with id: ${id}`
         );
       },
-      error: (response) => {
-        this.endpointService.openMatSnackBar(response);
+      error: (response: HttpErrorResponse) => {
+        this.endpointService.openMatSnackBar(response.message);
       },
     });
   }

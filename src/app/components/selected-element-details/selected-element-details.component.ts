@@ -22,6 +22,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-selected-element-details',
@@ -218,9 +219,9 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
           `Succesfully downloded repice with id: ${id}`
         );
       },
-      error: (response) => {
+      error: (response: HttpErrorResponse) => {
         this.router.navigate(['/not-found']);
-        this.endpointService.openMatSnackBar(response);
+        this.endpointService.openMatSnackBar(response.message);
       },
     });
     this.cdr.markForCheck();
@@ -288,8 +289,8 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
           `Succesfully created new repice with id: ${response._id}}`
         );
       },
-      error: (response) => {
-        this.endpointService.openMatSnackBar(response);
+      error: (response: HttpErrorResponse) => {
+        this.endpointService.openMatSnackBar(response.message);
       },
     });
   }
@@ -304,8 +305,8 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
           `Succesfully updated new repice with id: ${this.id}}`
         );
       },
-      error: (reponse) => {
-        this.endpointService.openMatSnackBar(reponse);
+      error: (response: HttpErrorResponse) => {
+        this.endpointService.openMatSnackBar(response.message);
       },
     });
   }
