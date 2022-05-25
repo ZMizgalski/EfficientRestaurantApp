@@ -29,10 +29,6 @@ export class MainNavComponent implements OnInit, OnDestroy {
     private endpointService: EndpointService
   ) {}
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
-  }
-
   public get showRecipes(): BehaviorSubject<boolean> {
     return this.selectedItemService.refhreshRecipesSubject;
   }
@@ -43,10 +39,6 @@ export class MainNavComponent implements OnInit, OnDestroy {
 
   public get added(): BehaviorSubject<boolean> {
     return this.selectedItemService.addedSubject;
-  }
-
-  private addAllSubscriptions(): void {
-    this.initializeRecipeRefhreshSubscription();
   }
 
   private initializeRecipeRefhreshSubscription(): void {
@@ -61,30 +53,6 @@ export class MainNavComponent implements OnInit, OnDestroy {
     this.endpointService.getAllRecipes().subscribe((recipes) => {
       this.recipes = recipes;
     });
-  }
-
-  public gen(): void {
-    this.endpointService
-      .generateApiRecipe({
-        name: 'elo1',
-        preparationTimeInMinutes: 11,
-        description: 'aasd123123asd',
-        ingredients: [
-          { name: 'el23o2', quantity: '20' },
-          { name: 'eewqlo2', quantity: '20' },
-          { name: 'elqweo2', quantity: '20' },
-        ],
-      })
-      .subscribe((resp) => {
-        console.log(resp);
-      });
-  }
-
-  ngOnInit(): void {
-    this.getAllRecipes();
-    this.createForm();
-    this.inputChanges();
-    this.addAllSubscriptions();
   }
 
   private createForm(): void {
@@ -149,8 +117,14 @@ export class MainNavComponent implements OnInit, OnDestroy {
     this.router.navigate(['/recipe/' + id]);
   }
 
-  // private reloadRecipes(): void {
-  //   this.selectedItemService.refhreshRecipes = false;
-  //   this.getAllRecipes();
-  // }
+  ngOnInit(): void {
+    this.selectedItemService.refhreshRecipes = true;
+    this.createForm();
+    this.inputChanges();
+    this.initializeRecipeRefhreshSubscription();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
 }

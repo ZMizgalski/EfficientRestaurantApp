@@ -49,6 +49,18 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
     return this.selectedItemService.addedSubject;
   }
 
+  public get getIngredients(): FormArray {
+    return this.form.get('ingredients') as FormArray;
+  }
+
+  public get getRecipe(): Recipe {
+    return this.recipe.getValue();
+  }
+
+  public get getIngredientsSize(): Number {
+    return !this.getIngredients ? 0 : this.getIngredients.length;
+  }
+
   private createFormGroup(): void {
     this.form = this.fb.group({
       name: new FormControl('', [Validators.required]),
@@ -59,18 +71,23 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
   }
 
   private addAllSubscriptions(): void {
+    this.initializeEdittingModeSubcription();
+    this.initializeAddedSubscription();
+  }
+
+  private initializeEdittingModeSubcription(): void {
+    this.subscriptions.push(
+      this.selectedItemService.edittingModeSubject.subscribe((value) => {
+        value ? this.enableAllInputs() : '';
+      })
+    );
+  }
+
+  private initializeAddedSubscription(): void {
     this.subscriptions.push(
       this.selectedItemService.addedSubject.subscribe((value) => {
         if (value) {
           this.form.reset();
-          this.enableAllInputs();
-        }
-      })
-    );
-
-    this.subscriptions.push(
-      this.selectedItemService.edittingModeSubject.subscribe((value) => {
-        if (value) {
           this.enableAllInputs();
         }
       })
@@ -115,18 +132,6 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
       }
     );
     this.form.controls['ingredients'].patchValue(patchedIngredients);
-  }
-
-  public get getIngredients(): FormArray {
-    return this.form.get('ingredients') as FormArray;
-  }
-
-  public get getRecipe(): Recipe {
-    return this.recipe.getValue();
-  }
-
-  public get getIngredientsSize(): Number {
-    return !this.getIngredients ? 0 : this.getIngredients.length;
   }
 
   private addAllIngredientsToRecipe(): void {
@@ -198,7 +203,6 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.disableAllInputs();
-
     const recipe: PayloadRecipe = {
       name: this.form.value.name,
       preparationTimeInMinutes: Number(this.form.value.preparationTime),

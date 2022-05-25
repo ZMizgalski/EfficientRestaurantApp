@@ -1,5 +1,4 @@
 <div class="main-container">
-  <button (click)="gen()">111</button>
   <div class="top-nav">
     <p class="top-nav__p">App Name</p>
     <button class="top-nav__button" (click)="openAboutAuthorDialog()">
@@ -26,9 +25,6 @@
           </button>
         </form>
       </div>
-      {{ edittingMode | async }}
-      {{ added | async }}
-      {{ showRecipes | async }}
       <span class="recipe-overlay" *ngIf="showRecipes | async">
         <div class="recipe" *ngFor="let recipe of recipes | recipeFilter: args">
           <span class="recipe-click-overlay" (click)="previewRoute(recipe._id)">
