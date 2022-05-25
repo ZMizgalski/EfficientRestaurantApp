@@ -123,6 +123,14 @@
                     display: flex;
                     justify-content: center;
 
+                    &__button-edit {
+                        margin: 10px !important;
+                    }
+
+                    &__button-delete {
+                        margin: 10px !important;
+                    }
+
                     @include nav-button("&__button-edit", $font-color_1, $close);
                     @include nav-button("&__button-delete", $font-color_1, $success);
                 }

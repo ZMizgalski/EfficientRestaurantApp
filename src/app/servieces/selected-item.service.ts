@@ -1,3 +1,4 @@
+import { Recipe } from './../models/recipe.interface';
 import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 
@@ -5,6 +6,10 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class SelectedItemService {
+  private recipesLocal: BehaviorSubject<Recipe[]> = new BehaviorSubject<
+    Recipe[]
+  >([]);
+
   private edittingModeLocal: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
@@ -14,6 +19,18 @@ export class SelectedItemService {
 
   private refhreshRecipesLocal: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
+
+  public set recipes(recipes: Recipe[]) {
+    this.recipesLocal.next(recipes);
+  }
+
+  public get recipes(): Recipe[] {
+    return this.recipesLocal.getValue();
+  }
+
+  public get recipesSubject(): BehaviorSubject<Recipe[]> {
+    return this.recipesLocal;
+  }
 
   public get refhreshRecipesSubject(): BehaviorSubject<boolean> {
     return this.refhreshRecipesLocal;

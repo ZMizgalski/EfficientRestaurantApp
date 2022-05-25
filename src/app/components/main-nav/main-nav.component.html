@@ -1,7 +1,11 @@
 <div class="main-container">
   <div class="top-nav">
     <p class="top-nav__p">App Name</p>
-    <button class="top-nav__button" (click)="openAboutAuthorDialog()">
+    <button
+      class="top-nav__button"
+      type="button"
+      (click)="openAboutAuthorDialog()"
+    >
       <i class="pi pi-align-justify"></i>
     </button>
   </div>
@@ -19,34 +23,45 @@
           />
           <button
             (click)="addNewRecipe()"
+            type="button"
             class="serach-container-form__button"
           >
             Add New
           </button>
         </form>
       </div>
-      <span class="recipe-overlay" *ngIf="showRecipes | async">
-        <div class="recipe" *ngFor="let recipe of recipes | recipeFilter: args">
+      <span
+        class="recipe-overlay"
+        *ngIf="(showRecipes | async) && (recipes | async)"
+      >
+        <div
+          class="recipe"
+          *ngFor="
+            let recipe of recipes.getValue() | recipeFilter: args;
+            trackBy: trackItem
+          "
+        >
           <span class="recipe-click-overlay" (click)="previewRoute(recipe._id)">
             <p class="recipe__p">
               {{ recipe.name }}
             </p>
-            <span class="recipe-button-container">
-              <button
-                type="button"
-                (click)="editRoute(recipe._id, true)"
-                class="recipe-button-container__button-edit"
-              >
-                <i class="pi pi-pencil"></i>
-              </button>
-              <button
-                type="button"
-                class="recipe-button-container__button-delete"
-                (click)="deleteRecipe(recipe._id)"
-              >
-                <i class="pi pi-times"></i>
-              </button> </span
-          ></span>
+          </span>
+          <span class="recipe-button-container">
+            <button
+              type="button"
+              (click)="editRoute(recipe._id, true)"
+              class="recipe-button-container__button-edit"
+            >
+              <i class="pi pi-pencil"></i>
+            </button>
+            <button
+              type="button"
+              class="recipe-button-container__button-delete"
+              (click)="deleteRecipe(recipe._id)"
+            >
+              <i class="pi pi-times"></i>
+            </button>
+          </span>
         </div>
       </span>
     </div>

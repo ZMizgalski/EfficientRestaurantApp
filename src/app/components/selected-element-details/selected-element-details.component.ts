@@ -23,6 +23,7 @@ import { Recipe } from './../../models/recipe.interface';
 import { EndpointService } from './../../servieces/endpoint.service';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   OnDestroy,
   OnInit,
@@ -54,7 +55,8 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private endpointService: EndpointService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   public get edittingMode(): BehaviorSubject<boolean> {
@@ -190,6 +192,7 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
   }
 
   private getHttpRecipe(id: string): void {
+    this.cdr.detectChanges();
     this.endpointService.getRecipe(id).subscribe({
       next: (response: Recipe) => {
         this.recipe.next(response);
@@ -199,6 +202,7 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
         this.router.navigate(['/not-found']);
       },
     });
+    this.cdr.markForCheck();
   }
 
   private initalizeEmptyRecipe(): void {
@@ -244,9 +248,11 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
   }
 
   private makeRecipeRequest(recipe: PayloadRecipe): void {
+    this.cdr.detectChanges();
     this.selectedItemService.edittingMode
       ? this.updateRecipe(recipe)
       : this.addNewRecipe(recipe);
+    this.cdr.markForCheck();
   }
 
   private addNewRecipe(recipe: PayloadRecipe): void {
@@ -282,7 +288,7 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
   public cancelOperationOnRecipe(): void {
     this.selectedItemService.added = false;
     this.selectedItemService.edittingMode = false;
-    this.router.navigate(['home']);
+    this.router.navigate(['/home']);
   }
 
   ngOnInit(): void {

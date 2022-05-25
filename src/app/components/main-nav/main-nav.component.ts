@@ -11,6 +11,7 @@ import {
   OnInit,
   OnDestroy,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -25,11 +26,11 @@ export class MainNavComponent implements OnInit, OnDestroy {
   public form!: FormGroup;
   private subscriptions: Subscription[] = [];
   public args: SerachFilterArgsInterface = { name: '' };
-  public recipes: Recipe[] = [];
 
   constructor(
     private selectedItemService: SelectedItemService,
     private dialog: MatDialog,
+    private cdr: ChangeDetectorRef,
     private fb: FormBuilder,
     private router: Router,
     private endpointService: EndpointService
@@ -47,6 +48,10 @@ export class MainNavComponent implements OnInit, OnDestroy {
     return this.selectedItemService.addedSubject;
   }
 
+  public get recipes(): any {
+    return this.selectedItemService.recipesSubject;
+  }
+
   private initializeRecipeRefhreshSubscription(): void {
     this.subscriptions.push(
       this.selectedItemService.refhreshRecipesSubject.subscribe((value) => {
@@ -55,9 +60,15 @@ export class MainNavComponent implements OnInit, OnDestroy {
     );
   }
 
+  public trackItem(index: number, item: Recipe) {
+    return item._id;
+  }
+
   private getAllRecipes(): void {
+    this.cdr.detectChanges();
     this.endpointService.getAllRecipes().subscribe((recipes) => {
-      this.recipes = recipes;
+      this.selectedItemService.recipes = recipes;
+      this.cdr.markForCheck();
     });
   }
 
@@ -79,16 +90,12 @@ export class MainNavComponent implements OnInit, OnDestroy {
   }
 
   public deleteRecipe(id: string): void {
-    this.selectedItemService.added = false;
-    this.selectedItemService.edittingMode = false;
-    this.selectedItemService.refhreshRecipes = false;
     this.openConfirmDialog(id);
   }
 
   public addNewRecipe(): void {
     this.selectedItemService.added = true;
     this.selectedItemService.edittingMode = false;
-    this.selectedItemService.refhreshRecipes = false;
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
     this.router.navigate(['recipe/AddNew']);
@@ -97,9 +104,7 @@ export class MainNavComponent implements OnInit, OnDestroy {
   public openConfirmDialog(id: string): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {});
     dialogRef.afterClosed().subscribe((result) => {
-      result
-        ? this.deleteRecipeEndpoint(id)
-        : (this.selectedItemService.refhreshRecipes = true);
+      result ? this.deleteRecipeEndpoint(id) : '';
     });
   }
 
@@ -124,10 +129,11 @@ export class MainNavComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.selectedItemService.refhreshRecipes = true;
+    this.router.navigate(['/home']);
     this.createForm();
     this.inputChanges();
     this.initializeRecipeRefhreshSubscription();
+    this.selectedItemService.refhreshRecipes = true;
   }
 
   ngOnDestroy(): void {
