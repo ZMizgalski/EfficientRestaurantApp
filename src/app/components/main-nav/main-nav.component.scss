@@ -81,7 +81,7 @@
             justify-content: center;
             align-items: center;
             height: 100%;
-            min-width: 200px;
+            min-width: 280px;
             width: 30%;
             background: $background-color_2;
 
@@ -102,7 +102,6 @@
                 justify-content: space-between;
                 align-items: center;
                 width: 100%;
-                cursor: pointer;
                 height: 60px;
                 transition: .2s ease;
 
@@ -110,9 +109,10 @@
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                    width: 100%;
+                    min-width: 150px;
                     height: 100%;
                     margin: 0;
+                    cursor: pointer;
                     padding: 0;
                 }
 
