@@ -1,6 +1,6 @@
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { SelectedItemService } from './../../servieces/selected-item.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { SerachFilterArgsInterface } from './../../models/search-filter-args.interface';
 import { EndpointService } from './../../servieces/endpoint.service';
 import { ConfirmDialogComponent } from './../../dialogs/confirm-dialog/confirm-dialog.component';
@@ -18,7 +18,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class MainNavComponent implements OnInit, OnDestroy {
   public form!: FormGroup;
   private subscriptions: Subscription[] = [];
-  public showRecipes = false;
+  public showRecipes: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
   public args: SerachFilterArgsInterface = { name: '' };
   public recipes: Recipe[] = [];
 
@@ -34,9 +36,25 @@ export class MainNavComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
+  public get edittingMode(): BehaviorSubject<boolean> {
+    return this.selectedItemService.edittingModeSubject;
+  }
+
+  public get added(): BehaviorSubject<boolean> {
+    return this.selectedItemService.addedSubject;
+  }
+
   private addAllSubscriptions(): void {
     this.subscriptions.push(
       this.selectedItemService.addedSubject.subscribe((value) => {
+        if (value) {
+          this.reloadRecipes();
+        }
+      })
+    );
+
+    this.subscriptions.push(
+      this.selectedItemService.edittingModeSubject.subscribe((value) => {
         if (value) {
           this.reloadRecipes();
         }
@@ -46,8 +64,9 @@ export class MainNavComponent implements OnInit, OnDestroy {
 
   private getAllRecipes(): void {
     this.endpointService.getAllRecipes().subscribe((recipes) => {
+      this.showRecipes.next(false);
       this.recipes = recipes;
-      this.showRecipes = true;
+      this.showRecipes.next(true);
     });
   }
 
@@ -93,6 +112,9 @@ export class MainNavComponent implements OnInit, OnDestroy {
   }
 
   public deleteRecipe(id: string): void {
+    this.selectedItemService.added = false;
+    this.selectedItemService.edittingMode = false;
+    this.showRecipes.next(false);
     this.openConfirmDialog(id);
   }
 
@@ -130,7 +152,7 @@ export class MainNavComponent implements OnInit, OnDestroy {
   }
 
   private reloadRecipes(): void {
-    this.showRecipes = false;
+    this.showRecipes.next(false);
     this.getAllRecipes();
   }
 }

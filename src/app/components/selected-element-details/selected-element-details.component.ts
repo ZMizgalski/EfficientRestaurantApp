@@ -130,6 +130,13 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
     return this.recipe.getValue();
   }
 
+  public get getIngredientsSize(): Number {
+    if (!this.getIngredients) {
+      return 0;
+    }
+    return this.getIngredients.length;
+  }
+
   private addAllIngredientsToRecipe(): void {
     this.form.controls['ingredients'].patchValue([]);
     if (!this.selectedItemService.added) {
@@ -234,7 +241,12 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
       ingredients: this.form.value.ingredients,
     };
     this.endpointService.editRecipe(recipe, this.id).subscribe({
-      next: () => {},
+      next: () => {
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate(['recipe/' + this.id]);
+        this.selectedItemService.edittingMode = false;
+      },
     });
   }
 

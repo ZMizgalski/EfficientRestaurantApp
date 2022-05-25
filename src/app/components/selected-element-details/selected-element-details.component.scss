@@ -1,5 +1,6 @@
 @import '../../styling/nav-button.scss';
 @import '../../styling/action-button.scss';
+@import '../../styling/styling.scss';
 
 .recipe-preview-container {
     display: flex;
@@ -25,17 +26,24 @@
             align-items: center;
             flex-direction: column;
 
-            @include action-button("&__button-add");
+            &-buttons-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                @include action-button("&__button-add", $font-color_1, $background-color_2, $success);
 
-            @include action-button("&__button-update");
+                @include action-button("&__button-update", $font-color_1, $background-color_2, $success);
 
-            @include action-button("&__button-cancel");
+                @include action-button("&__button-cancel", $font-color_1, $background-color_2, $close);
+            }
 
             &__label {
                 display: flex;
                 text-align: center;
                 justify-content: center;
                 align-items: center;
+                font-size: 17px;
+                margin: 10px;
             }
 
             &__input {
@@ -49,7 +57,16 @@
                 width: 100%;
             }
 
-            @include action-button("&__button-add-ingredients");
+            &__p {
+                margin: 10px;
+                font-size: 20px
+            }
+
+            @include action-button("&__button-add-ingredients", $font-color_1, $background-color_4, $background-color_2);
+
+            &__button-add-ingredients {
+                margin: 10px;
+            }
 
             .ingredients-container {
                 display: flex;
@@ -58,34 +75,49 @@
                 flex-direction: column;
                 margin: 20px;
 
-                &__p {
-                    margin: 10px;
-                }
-
-
-
                 &-ingredient {
 
-                    &__input {
-                        margin: 10px;
-                        min-height: 30px;
-                        font-size: 20px;
-                        outline: none;
-                        border: none;
-                        border-radius: 5px;
-                        min-width: 60px;
-                        width: 50%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    &-input-container {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        flex-direction: column;
+
+                        &-aligner {
+
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            width: 100%;
+
+                            &__label {
+                                display: inline-block;
+                                text-align: right;
+                                width: 30%;
+                            }
+
+                            &__input {
+                                margin: 10px;
+                                min-height: 30px;
+                                font-size: 20px;
+                                outline: none;
+                                border: none;
+                                border-radius: 5px;
+                                min-width: 60px;
+                                width: 70%;
+                            }
+                        }
+
+
                     }
 
-                    @include nav-button("&__button");
+                    @include nav-button("&__button", $font-color_1, $close);
                 }
-
-
             }
-
         }
-
     }
-
-
 }
