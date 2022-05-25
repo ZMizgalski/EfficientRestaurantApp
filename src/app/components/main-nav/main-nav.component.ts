@@ -31,7 +31,6 @@ export class MainNavComponent implements OnInit {
   private getAllRecipes(): void {
     this.endpointService.getAllRecipes().subscribe((recipes) => {
       this.recipes = recipes;
-      console.log(this.recipes);
       this.showRecipes = true;
     });
   }
@@ -97,6 +96,12 @@ export class MainNavComponent implements OnInit {
 
   public route(id: string, value: boolean): void {
     this.selectedItemService.edittingMode = value;
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate(['/recipe/' + id]);
+  }
+
+  public route2(id: string): void {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
     this.router.navigate(['/recipe/' + id]);

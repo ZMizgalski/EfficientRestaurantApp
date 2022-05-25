@@ -145,9 +145,7 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
 
   private updateRecipe(): void {
     this.endpointService.editRecipe(this.form.value, this.id).subscribe({
-      next: (repsonse) => {
-        console.log(repsonse);
-      },
+      next: () => {},
     });
   }
 
@@ -158,6 +156,7 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
   }
 
   private switchEditingMode(): void {
+    console.log(this.selectedItemService.edittingMode);
     if (this.selectedItemService.edittingMode) {
       this.enableAllInputs();
     }

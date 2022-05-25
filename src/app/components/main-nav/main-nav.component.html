@@ -28,7 +28,7 @@
       </div>
       <span class="recipe-overlay" *ngIf="showRecipes">
         <div class="recipe" *ngFor="let recipe of recipes | recipeFilter: args">
-          <span class="recipe-click-overlay" (click)="route(recipe._id, false)">
+          <span class="recipe-click-overlay" (click)="route2(recipe._id)">
             <p class="recipe__p">
               {{ recipe.name }}
             </p>
