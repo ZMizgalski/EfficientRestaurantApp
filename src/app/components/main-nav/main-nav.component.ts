@@ -45,16 +45,23 @@ export class MainNavComponent implements OnInit, OnDestroy {
   }
 
   private addAllSubscriptions(): void {
+    this.initializeAddedSubscription();
+    this.initializeEdditingModeSubscription();
+  }
+
+  private initializeEdditingModeSubscription(): void {
     this.subscriptions.push(
-      this.selectedItemService.addedSubject.subscribe((value) => {
+      this.selectedItemService.edittingModeSubject.subscribe((value) => {
         if (value) {
           this.reloadRecipes();
         }
       })
     );
+  }
 
+  private initializeAddedSubscription(): void {
     this.subscriptions.push(
-      this.selectedItemService.edittingModeSubject.subscribe((value) => {
+      this.selectedItemService.addedSubject.subscribe((value) => {
         if (value) {
           this.reloadRecipes();
         }
@@ -126,14 +133,20 @@ export class MainNavComponent implements OnInit, OnDestroy {
     this.router.navigate(['recipe/AddNew']);
   }
 
-  public openConfirmDialog(data: any): void {
+  public openConfirmDialog(id: string): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {});
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.endpointService.deleteRecipe(data).subscribe(() => {
-          this.reloadRecipes();
-        });
+        this.deleteRecipeEndpoint(id);
+      } else {
+        this.showRecipes.next(true);
       }
+    });
+  }
+
+  private deleteRecipeEndpoint(id: string): void {
+    this.endpointService.deleteRecipe(id).subscribe(() => {
+      this.reloadRecipes();
     });
   }
 

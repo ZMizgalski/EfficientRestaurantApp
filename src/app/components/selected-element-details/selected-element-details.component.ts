@@ -221,8 +221,6 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
       description: this.form.value.description,
       ingredients: this.form.value.ingredients,
     };
-    this.ingredientsLoaded.next(true);
-    this.loaded.next(true);
     this.endpointService.generateApiRecipe(recipe).subscribe({
       next: (response: Recipe) => {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
