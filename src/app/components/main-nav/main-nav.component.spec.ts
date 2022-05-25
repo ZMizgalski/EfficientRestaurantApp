@@ -1,3 +1,4 @@
+import { Recipe } from './../../models/recipe.interface';
 import { RecipeFilterPipe } from './../../servieces/filters/recipe-filter.pipe';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SelectedItemService } from './../../servieces/selected-item.service';
@@ -57,6 +58,28 @@ describe('MainNavComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should get edittingModeSubject', () => {
+    selectedItemService.edittingMode = true;
+    expect(component.edittingMode.getValue()).toBeTruthy();
+  });
+
+  it('should get addedSubject', () => {
+    selectedItemService.added = true;
+    expect(component.added.getValue()).toBeTruthy();
+  });
+
+  it('should tracBy: trackItem', () => {
+    const recipe: Recipe = {
+      _id: '1',
+      name: '1',
+      description: '1',
+      preparationTimeInMinutes: 10,
+      ingredients: [{ _id: '1', name: '1', quantity: '1' }],
+    };
+    const id = component.trackItem(1, recipe);
+    expect(recipe._id).toEqual(id);
   });
 
   it('should addNewRecipe', () => {
