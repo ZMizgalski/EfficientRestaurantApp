@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 
 import { AboutAuthorComponent } from './about-author.component';
 
@@ -8,9 +9,8 @@ describe('AboutAuthorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AboutAuthorComponent ]
-    })
-    .compileComponents();
+      declarations: [AboutAuthorComponent, MatDialogContent, MatDialogActions],
+    }).compileComponents();
   });
 
   beforeEach(() => {
