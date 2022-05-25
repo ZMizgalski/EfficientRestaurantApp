@@ -1,3 +1,4 @@
+import { Recipe } from './../../models/recipe.interface';
 import { FormIngredient } from './../../models/form-ingredient.interface';
 import { SelectedItemService } from './../../servieces/selected-item.service';
 import { HourMinutesPipe } from './../../servieces/filters/hour-minutes.pipe';
@@ -9,15 +10,19 @@ import {
   FormArray,
   FormGroup,
   FormControl,
+  FormBuilder,
 } from '@angular/forms';
 
 import { SelectedElementDetailsComponent } from './selected-element-details.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { PayloadRecipe } from 'src/app/models';
+import { Router } from '@angular/router';
 
 describe('SelectedElementDetailsComponent', () => {
   let component: SelectedElementDetailsComponent;
   let fixture: ComponentFixture<SelectedElementDetailsComponent>;
   let selectedItemService: SelectedItemService;
+  let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -34,6 +39,7 @@ describe('SelectedElementDetailsComponent', () => {
 
   beforeEach(() => {
     selectedItemService = TestBed.inject(SelectedItemService);
+    router = TestBed.inject(Router);
     fixture = TestBed.createComponent(SelectedElementDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -41,6 +47,39 @@ describe('SelectedElementDetailsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should get edittingMode', () => {
+    selectedItemService.edittingMode = false;
+    expect(component.edittingMode.getValue()).toBeFalsy();
+  });
+
+  it('should get added', () => {
+    selectedItemService.added = false;
+    expect(component.added.getValue()).toBeFalsy();
+  });
+
+  it('should get Recipe', () => {
+    const recipe: Recipe = {
+      _id: '1',
+      name: '1',
+      description: '1',
+      preparationTimeInMinutes: 10,
+      ingredients: [{ _id: '1', name: '1', quantity: '1' }],
+    };
+    component['recipe'].next(recipe);
+    expect(component.getRecipe).toEqual(recipe);
+  });
+
+  it('should get getIngredientsSiz', () => {
+    const control = <FormArray>component.form.controls['ingredients'];
+    control.push(
+      new FormGroup({
+        name: new FormControl('1'),
+        quantity: new FormControl('2'),
+      })
+    );
+    expect(component.getIngredientsSize).toBe(1);
   });
 
   it('should extracTimeCorrectly', () => {
@@ -131,5 +170,41 @@ describe('SelectedElementDetailsComponent', () => {
     component.form.controls['ingredients'];
     expect(component.form.controls['ingredients'].value).toEqual([ingredient]);
     expect(component.ingredientsLoaded.getValue()).toBeTruthy();
+  });
+
+  it('should creatingNewRecipe()', () => {
+    component.creatingNewRecipe();
+    expect(selectedItemService.added).toBeTruthy();
+  });
+
+  it('should updateExistingRecipe()', () => {
+    component.updateExistingRecipe();
+    expect(selectedItemService.edittingMode).toBeTruthy();
+  });
+
+  it('should makeRecipeRequest(recipe: PayloadRecipe)', () => {
+    const recipe: PayloadRecipe = {
+      name: '1',
+      description: '1',
+      preparationTimeInMinutes: 10,
+      ingredients: [{ name: '1', quantity: '1' }],
+    };
+    const detectChangesSpy = spyOn((component as any).cdr, 'detectChanges');
+    component['makeRecipeRequest'](recipe);
+    expect(detectChangesSpy).toHaveBeenCalled();
+  });
+
+  it('should makeSmartRoute(id: string)', () => {
+    const spy = spyOn(router, 'navigate');
+    component['makeSmartRoute']('1');
+    const url = spy.calls.first().args[0];
+    expect(url).toEqual(['recipe/1']);
+  });
+
+  it('should cancelOperationOnRecipe()', () => {
+    const spy = spyOn(router, 'navigate');
+    component['cancelOperationOnRecipe']();
+    const url = spy.calls.first().args[0];
+    expect(url).toEqual(['/home']);
   });
 });
