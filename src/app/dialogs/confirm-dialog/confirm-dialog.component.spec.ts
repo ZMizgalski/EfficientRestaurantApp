@@ -11,8 +11,8 @@ describe('ConfirmDialogComponent', () => {
   let component: ConfirmDialogComponent;
   let fixture: ComponentFixture<ConfirmDialogComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [MatDialogModule],
       providers: [
         { provide: MatDialogRef, useValue: {} },
@@ -20,9 +20,6 @@ describe('ConfirmDialogComponent', () => {
       ],
       declarations: [ConfirmDialogComponent],
     }).compileComponents();
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(ConfirmDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

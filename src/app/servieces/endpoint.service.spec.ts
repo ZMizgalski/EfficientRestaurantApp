@@ -9,6 +9,7 @@ import {
 import { TestBed } from '@angular/core/testing';
 
 import { EndpointService } from './endpoint.service';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('EndpointService', () => {
   let service: EndpointService;
@@ -17,6 +18,7 @@ describe('EndpointService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
         HttpClientTestingModule,
         MatSnackBarModule,

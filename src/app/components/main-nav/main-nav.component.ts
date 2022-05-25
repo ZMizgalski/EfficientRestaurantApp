@@ -1,3 +1,4 @@
+import { RecipeFilterPipe } from './../../servieces/filters/recipe-filter.pipe';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { SelectedItemService } from './../../servieces/selected-item.service';
 import { Router } from '@angular/router';
