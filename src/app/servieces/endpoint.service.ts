@@ -1,3 +1,4 @@
+import { PayloadRecipe } from './../models/payload-recipe.interface';
 import { apiKey } from './serviceData';
 import { Recipe } from './../models/recipe.interface';
 import { HttpClient } from '@angular/common/http';
@@ -26,7 +27,10 @@ export class EndpointService {
     return this.http.delete<Recipe>(`/${apiKey}/recipe/` + id);
   }
 
-  public editRecipe(newRecipe: Recipe, id: string): Observable<Recipe> {
+  public editRecipe(
+    newRecipe: PayloadRecipe,
+    id: string
+  ): Observable<PayloadRecipe> {
     return this.http.put<Recipe>(`/${apiKey}/recipe/` + id, newRecipe);
   }
 }

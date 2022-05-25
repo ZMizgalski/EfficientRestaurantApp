@@ -1,3 +1,4 @@
+import { PayloadRecipe } from './../../models/payload-recipe.interface';
 import { SelectedItemService } from './../../servieces/selected-item.service';
 import { FormIngredient } from './../../models/form-ingredient.interface';
 import { BehaviorSubject, take } from 'rxjs';
@@ -144,7 +145,13 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
   }
 
   private updateRecipe(): void {
-    this.endpointService.editRecipe(this.form.value, this.id).subscribe({
+    const recipe: PayloadRecipe = {
+      name: this.form.value.name,
+      preparationTimeInMinutes: Number(this.form.value.preparationTime),
+      description: this.form.value.description,
+      ingredients: this.form.value.ingredients,
+    };
+    this.endpointService.editRecipe(recipe, this.id).subscribe({
       next: () => {},
     });
   }
@@ -156,7 +163,6 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
   }
 
   private switchEditingMode(): void {
-    console.log(this.selectedItemService.edittingMode);
     if (this.selectedItemService.edittingMode) {
       this.enableAllInputs();
     }

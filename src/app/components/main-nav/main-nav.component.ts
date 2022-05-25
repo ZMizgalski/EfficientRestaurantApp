@@ -87,7 +87,7 @@ export class MainNavComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {});
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.endpointService.deleteRecipe(data).subscribe((resp) => {
+        this.endpointService.deleteRecipe(data).subscribe(() => {
           this.reloadRecipes();
         });
       }
