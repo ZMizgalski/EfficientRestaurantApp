@@ -51,7 +51,7 @@
       <div
         class="ingredients-container"
         formArrayName="ingredients"
-        *ngIf="(ingredientsLoaded | async) && getIngredientsSize != 0"
+        *ngIf="(ingredientsLoaded | async) && getIngredientsSize !== 0"
       >
         <div
           class="ingredients-container-ingredient"
