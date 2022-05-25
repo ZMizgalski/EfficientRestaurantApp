@@ -1,4 +1,3 @@
-import { RecipeFilterPipe } from './../../servieces/filters/recipe-filter.pipe';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { SelectedItemService } from './../../servieces/selected-item.service';
 import { Router } from '@angular/router';
@@ -16,7 +15,6 @@ import {
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
