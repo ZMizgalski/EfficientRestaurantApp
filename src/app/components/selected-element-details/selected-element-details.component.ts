@@ -56,7 +56,8 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private endpointService: EndpointService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private hourMinutesPipe: HourMinutesPipe
   ) {}
 
   public get edittingMode(): BehaviorSubject<boolean> {
@@ -94,6 +95,27 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
       ]),
       ingredients: this.fb.array([], this.minLength(2)),
     });
+
+    this.form.valueChanges.subscribe((form) => {
+      if (form.preparationTime) {
+        this.form.patchValue(
+          {
+            preparationTime: this.hourMinutesPipe.transform(
+              form.preparationTime,
+              ''
+            ),
+          },
+          { emitEvent: false }
+        );
+      }
+    });
+  }
+
+  private extractPreparationTime(data: string): number {
+    const arr = data.split('h');
+    const h = arr[0] ? Number(arr[0]) : 0;
+    const m = arr[1] ? Number(arr[1].replace('m', '')) : 0;
+    return h * 60 + m;
   }
 
   private minLength(min: number): ValidatorFn | any {
@@ -240,7 +262,9 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
     this.disableAllInputs();
     const recipe: PayloadRecipe = {
       name: this.form.value.name,
-      preparationTimeInMinutes: Number(this.form.value.preparationTime),
+      preparationTimeInMinutes: this.extractPreparationTime(
+        this.form.value.preparationTime
+      ),
       description: this.form.value.description,
       ingredients: this.form.value.ingredients,
     };

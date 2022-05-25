@@ -44,6 +44,7 @@ import { HourMinutesPipe } from './servieces/filters/hour-minutes.pipe';
       useClass: ApiInterceptorService,
       multi: true,
     },
+    HourMinutesPipe,
   ],
   bootstrap: [AppComponent],
 })
