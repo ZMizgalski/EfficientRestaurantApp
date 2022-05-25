@@ -71,6 +71,7 @@
           />
         </ng-container>
       </div>
+      <button *ngIf="added | async" type="submit">Add</button>
       <button *ngIf="edittingMode | async" type="submit">Update</button>
     </form>
   </div>

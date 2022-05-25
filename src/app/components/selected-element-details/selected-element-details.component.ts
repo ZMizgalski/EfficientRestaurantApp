@@ -1,7 +1,7 @@
 import { PayloadRecipe } from './../../models/payload-recipe.interface';
 import { SelectedItemService } from './../../servieces/selected-item.service';
 import { FormIngredient } from './../../models/form-ingredient.interface';
-import { BehaviorSubject, take } from 'rxjs';
+import { BehaviorSubject, Subscription, take } from 'rxjs';
 import { FormGroup, FormBuilder, FormControl, FormArray } from '@angular/forms';
 import { Recipe } from './../../models/recipe.interface';
 import { EndpointService } from './../../servieces/endpoint.service';
@@ -26,6 +26,7 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
   public loaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public form!: FormGroup;
   private id!: string;
+  private subscriptions: Subscription[] = [];
   constructor(
     private selectedItemService: SelectedItemService,
     private fb: FormBuilder,
@@ -38,6 +39,10 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
     return this.selectedItemService.edittingModeSubject;
   }
 
+  public get added(): BehaviorSubject<boolean> {
+    return this.selectedItemService.addedSubject;
+  }
+
   private createFormGroup(): void {
     this.form = this.fb.group({
       name: new FormControl(),
@@ -45,6 +50,20 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
       description: new FormControl(),
       ingredients: this.fb.array([]),
     });
+  }
+
+  private addAllSubscriptions(): void {
+    this.subscriptions.push(
+      this.selectedItemService.addedSubject.subscribe((item) => {
+        this.switchEditingMode();
+      })
+    );
+
+    this.subscriptions.push(
+      this.selectedItemService.edittingModeSubject.subscribe((item) => {
+        this.switchEditingMode();
+      })
+    );
   }
 
   private disableAllInputs(): void {
@@ -73,7 +92,7 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
     this.form.controls['description'].patchValue(recipe.description);
     this.patchIngredientsValues();
     this.disableAllInputs();
-    this.switchEditingMode();
+    this.addAllSubscriptions();
   }
 
   private patchIngredientsValues(): void {
@@ -163,12 +182,16 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
   }
 
   private switchEditingMode(): void {
-    if (this.selectedItemService.edittingMode) {
+    if (
+      this.selectedItemService.edittingMode ||
+      this.selectedItemService.added
+    ) {
       this.enableAllInputs();
     }
   }
 
   ngOnDestroy(): void {
+    this.subscriptions.forEach((item) => item.unsubscribe());
     this.ingredientsLoaded.next(false);
     this.loaded.next(false);
   }

@@ -80,7 +80,8 @@ export class MainNavComponent implements OnInit {
   }
 
   public addNewRecipe(): void {
-    console.log('add new recipe');
+    this.selectedItemService.added = true;
+    this.selectedItemService.edittingMode = false;
   }
 
   public openConfirmDialog(data: any): void {
@@ -96,6 +97,7 @@ export class MainNavComponent implements OnInit {
 
   public route(id: string, value: boolean): void {
     this.selectedItemService.edittingMode = value;
+    this.selectedItemService.added = false;
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
     this.router.navigate(['/recipe/' + id]);
