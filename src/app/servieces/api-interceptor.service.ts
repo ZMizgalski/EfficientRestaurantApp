@@ -20,7 +20,7 @@ export class ApiInterceptorService implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     request = request.clone({
       setHeaders: {
-        // 'X-API-KEY': 'HoA',
+        'X-API-KEY': 'HoA',
       },
     });
     return next.handle(request);

@@ -1,13 +1,23 @@
+import { HourMinutesPipe } from './../../servieces/filters/hour-minutes.pipe';
 import { PayloadRecipe } from './../../models/payload-recipe.interface';
 import { SelectedItemService } from './../../servieces/selected-item.service';
 import { FormIngredient } from './../../models/form-ingredient.interface';
-import { BehaviorSubject, Subscription, take } from 'rxjs';
+import {
+  BehaviorSubject,
+  debounceTime,
+  map,
+  startWith,
+  Subscription,
+  take,
+} from 'rxjs';
 import {
   FormGroup,
   FormBuilder,
   FormControl,
   FormArray,
   Validators,
+  AbstractControl,
+  ValidatorFn,
 } from '@angular/forms';
 import { Recipe } from './../../models/recipe.interface';
 import { EndpointService } from './../../servieces/endpoint.service';
@@ -69,11 +79,26 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
 
   private createFormGroup(): void {
     this.form = this.fb.group({
-      name: new FormControl('', [Validators.required]),
+      name: new FormControl('', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(80),
+      ]),
       preparationTime: new FormControl(0, [Validators.required]),
-      description: new FormControl('', [Validators.required]),
-      ingredients: this.fb.array([]),
+      description: new FormControl('', [
+        Validators.required,
+        Validators.minLength(15),
+        Validators.maxLength(255),
+      ]),
+      ingredients: this.fb.array([], this.minLength(2)),
     });
+  }
+
+  private minLength(min: number): ValidatorFn | any {
+    return (control: AbstractControl[]) => {
+      if (!(control instanceof FormArray)) return;
+      return control.length < min ? { minLength: true } : null;
+    };
   }
 
   private addAllSubscriptions(): void {

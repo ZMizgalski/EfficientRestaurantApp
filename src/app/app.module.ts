@@ -15,6 +15,7 @@ import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.
 import { ApiInterceptorService } from './servieces/api-interceptor.service';
 import { RecipeFilterPipe } from './servieces/filters/recipe-filter.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HourMinutesPipe } from './servieces/filters/hour-minutes.pipe';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AboutAuthorComponent,
     ConfirmDialogComponent,
     RecipeFilterPipe,
+    HourMinutesPipe,
   ],
   imports: [
     MatDialogModule,

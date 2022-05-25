@@ -23,4 +23,8 @@
     #{$className}:hover {
         background-color: rgba($color: $hover-text-color, $alpha: 1)
     }
+
+    #{$className}:disabled {
+        background-color: rgba($color: $background-color_3, $alpha: 1)
+    }
 }
