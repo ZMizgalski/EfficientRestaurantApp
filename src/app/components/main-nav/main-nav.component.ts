@@ -1,4 +1,4 @@
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { SelectedItemService } from './../../servieces/selected-item.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SerachFilterArgsInterface } from './../../models/search-filter-args.interface';

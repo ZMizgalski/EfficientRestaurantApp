@@ -1,3 +1,6 @@
+@import '../../styling/nav-button.scss';
+@import '../../styling/action-button.scss';
+
 .recipe-preview-container {
     display: flex;
     justify-content: center;
@@ -22,6 +25,12 @@
             align-items: center;
             flex-direction: column;
 
+            @include action-button("&__button-add");
+
+            @include action-button("&__button-update");
+
+            @include action-button("&__button-cancel");
+
             &__label {
                 display: flex;
                 text-align: center;
@@ -29,20 +38,49 @@
                 align-items: center;
             }
 
-            &__input {}
+            &__input {
+                margin: 10px;
+                min-height: 30px;
+                font-size: 20px;
+                outline: none;
+                border: none;
+                border-radius: 5px;
+                min-width: 60px;
+                width: 100%;
+            }
 
+            @include action-button("&__button-add-ingredients");
 
             .ingredients-container {
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 flex-direction: column;
+                margin: 20px;
 
                 &__p {
                     margin: 10px;
                 }
 
-                &__input {}
+
+
+                &-ingredient {
+
+                    &__input {
+                        margin: 10px;
+                        min-height: 30px;
+                        font-size: 20px;
+                        outline: none;
+                        border: none;
+                        border-radius: 5px;
+                        min-width: 60px;
+                        width: 50%;
+                    }
+
+                    @include nav-button("&__button");
+                }
+
+
             }
 
         }

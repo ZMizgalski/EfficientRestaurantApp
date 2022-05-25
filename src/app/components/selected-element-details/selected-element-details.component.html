@@ -36,7 +36,14 @@
         formControlName="description"
         placeholder="description"
       />
-
+      <button
+        type="button"
+        class="recipe-content-container-form__button-add-ingredients"
+        *ngIf="(added | async) || (edittingMode | async)"
+        (click)="addIngredientFormControl()"
+      >
+        Add Ingriedients
+      </button>
       <div
         class="ingredients-container"
         formArrayName="ingredients"
@@ -49,10 +56,6 @@
           formGroupName="{{ i }}"
           *ngFor="let ingredient of getIngredients.controls; let i = index"
         >
-          <label
-            class="ingredients-container-ingredient__label"
-            for="ingredientName"
-          ></label>
           <input
             type="text"
             id="ingredientName"
@@ -60,11 +63,6 @@
             class="ingredients-container-ingredient__input"
             formControlName="name"
           />
-
-          <label
-            class="ingredients-container-ingredient__label"
-            for="ingredientQuantity"
-          ></label>
           <input
             type="text"
             id="ingredientQuantity"
@@ -75,7 +73,6 @@
           <button
             *ngIf="(added | async) || (edittingMode | async)"
             (click)="deleteIngredient(i)"
-            type="button"
             class="ingredients-container-ingredient__button"
           >
             <i class="pi pi-times"></i>
@@ -83,18 +80,28 @@
         </ng-container>
       </div>
       <button
+        class="recipe-content-container-form__button-cancel"
         (click)="cancelOperationOnRecipe()"
         *ngIf="(added | async) || (edittingMode | async)"
-        type="button"
       >
         Cancel
       </button>
-      <button *ngIf="added | async" type="submit">Add</button>
-      <button *ngIf="edittingMode | async" type="submit">Update</button>
+      <button
+        (click)="creatingNewRecipe()"
+        class="recipe-content-container-form__button-add"
+        *ngIf="added | async"
+        type="submit"
+      >
+        Add
+      </button>
+      <button
+        (click)="updateExistingRecipe()"
+        class="recipe-content-container-form__button-update"
+        *ngIf="edittingMode | async"
+        type="submit"
+      >
+        Update
+      </button>
     </form>
-
-    <button *ngIf="added | async" (click)="addIngredientFormControl()">
-      Add Ingriedients
-    </button>
   </div>
 </div>

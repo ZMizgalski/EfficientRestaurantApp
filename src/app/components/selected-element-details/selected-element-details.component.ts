@@ -137,6 +137,7 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
         value.ingredients.forEach(() => {
           this.addIngredientFormControl();
         });
+
         this.setAllValues(value);
       });
     }
@@ -160,7 +161,7 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
         this.recipe.next(response);
         this.loaded.next(true);
       },
-      error: (error) => {
+      error: () => {
         this.router.navigate(['/not-found']);
       },
     });
@@ -189,14 +190,21 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
+  public creatingNewRecipe(): void {
+    this.selectedItemService.added = true;
+  }
+
+  public updateExistingRecipe(): void {
+    this.selectedItemService.edittingMode = true;
+  }
+
   onSubmit() {
-    this.selectedItemService.edittingMode = false;
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = 'reload';
     this.disableAllInputs();
     this.selectedItemService.edittingMode
       ? this.updateRecipe()
       : this.addNewRecipe();
+    this.selectedItemService.edittingMode = false;
+    this.selectedItemService.added = false;
   }
 
   private addNewRecipe(): void {
@@ -206,6 +214,8 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
       description: this.form.value.description,
       ingredients: this.form.value.ingredients,
     };
+    this.ingredientsLoaded.next(true);
+    this.loaded.next(true);
     this.endpointService.generateApiRecipe(recipe).subscribe({
       next: (response: Recipe) => {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -229,13 +239,13 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
   }
 
   public deleteIngredient(index: number): void {
-    console.log(this.getIngredients.controls[index]);
+    (<FormArray>this.form.get('ingredients')).removeAt(index);
   }
 
   public cancelOperationOnRecipe(): void {
     this.selectedItemService.added = false;
     this.selectedItemService.edittingMode = false;
-    this.disableAllInputs();
+    this.router.navigate(['home']);
   }
 
   ngOnInit(): void {
