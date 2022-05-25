@@ -45,6 +45,19 @@ describe('SelectedElementDetailsComponent', () => {
     fixture.detectChanges();
   });
 
+  it('should initialize empty recipe', () => {
+    component['initalizeEmptyRecipe']();
+    const recipe = {
+      _id: '',
+      name: '',
+      description: '',
+      preparationTimeInMinutes: 0,
+      ingredients: [],
+    };
+    expect(component['recipe'].getValue()).toEqual(recipe);
+    expect(component.loaded.getValue()).toBeTruthy();
+  });
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -72,8 +85,8 @@ describe('SelectedElementDetailsComponent', () => {
   });
 
   it('should get getIngredientsSiz', () => {
-    const control = <FormArray>component.form.controls['ingredients'];
-    control.push(
+    const recipes = <FormArray>component.form.controls['ingredients'];
+    recipes.push(
       new FormGroup({
         name: new FormControl('1'),
         quantity: new FormControl('2'),
