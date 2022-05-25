@@ -95,7 +95,9 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
       ]),
       ingredients: this.fb.array([], this.minLength(2)),
     });
+  }
 
+  private startListenerForFormChange(): void {
     this.form.valueChanges.subscribe((form) => {
       if (form.preparationTime) {
         this.form.patchValue(
@@ -318,6 +320,7 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getParamRoute();
     this.createFormGroup();
+    this.startListenerForFormChange();
     this.addAllIngredientsToRecipe();
   }
 
