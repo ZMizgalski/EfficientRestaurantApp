@@ -26,10 +26,7 @@ export class EndpointService {
     return this.http.delete<Recipe>(`/${apiKey}/recipe/` + id);
   }
 
-  public editRecipe(newRecipe: Recipe): Observable<Recipe> {
-    return this.http.put<Recipe>(
-      `/${apiKey}/recipe/` + newRecipe._id,
-      newRecipe
-    );
+  public editRecipe(newRecipe: Recipe, id: string): Observable<Recipe> {
+    return this.http.put<Recipe>(`/${apiKey}/recipe/` + id, newRecipe);
   }
 }

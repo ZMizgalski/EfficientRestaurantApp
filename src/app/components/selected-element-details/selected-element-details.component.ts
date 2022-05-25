@@ -140,6 +140,15 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
     this.disableAllInputs();
+    this.updateRecipe();
+  }
+
+  private updateRecipe(): void {
+    this.endpointService.editRecipe(this.form.value, this.id).subscribe({
+      next: (repsonse) => {
+        console.log(repsonse);
+      },
+    });
   }
 
   ngOnInit(): void {

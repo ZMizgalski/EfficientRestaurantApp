@@ -31,6 +31,7 @@ export class MainNavComponent implements OnInit {
   private getAllRecipes(): void {
     this.endpointService.getAllRecipes().subscribe((recipes) => {
       this.recipes = recipes;
+      console.log(this.recipes);
       this.showRecipes = true;
     });
   }

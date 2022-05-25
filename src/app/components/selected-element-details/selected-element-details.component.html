@@ -22,7 +22,7 @@
       <input
         class="recipe-content-container-form__input"
         id="preparationTime"
-        type="text"
+        type="number"
         formControlName="preparationTime"
         placeholder="preperation time"
       />
@@ -71,7 +71,6 @@
           />
         </ng-container>
       </div>
-      {{ edittingMode | async }}
       <button *ngIf="edittingMode | async" type="submit">Update</button>
     </form>
   </div>
