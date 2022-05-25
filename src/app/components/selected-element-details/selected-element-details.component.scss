@@ -30,10 +30,9 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+
                 @include action-button("&__button-add", $font-color_1, $background-color_2, $success);
-
                 @include action-button("&__button-update", $font-color_1, $background-color_2, $success);
-
                 @include action-button("&__button-cancel", $font-color_1, $background-color_2, $close);
             }
 
@@ -111,8 +110,6 @@
                                 width: 70%;
                             }
                         }
-
-
                     }
 
                     @include nav-button("&__button", $font-color_1, $close);

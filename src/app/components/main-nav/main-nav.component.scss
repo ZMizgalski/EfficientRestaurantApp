@@ -60,7 +60,7 @@
                     padding: 5px;
                     font-size: 16px;
                     border-radius: 0.2rem;
-                    background-color: rgb(255, 255, 255);
+                    background-color: $font-color_1;
                     border: none;
                     outline: none;
                     width: 90%;
@@ -69,7 +69,6 @@
 
                 @include action-button('&__button', $font-color_1)
             }
-
         }
 
         &-recipes-container {
@@ -139,7 +138,6 @@
             .recipe:hover {
                 background: rgba($color: $background-color_1, $alpha: 0.1);
             }
-
         }
 
         &-details-container {
@@ -147,5 +145,4 @@
             background: $background-color_3;
         }
     }
-
 }

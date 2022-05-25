@@ -2,14 +2,7 @@ import { HourMinutesPipe } from './../../servieces/filters/hour-minutes.pipe';
 import { PayloadRecipe } from './../../models/payload-recipe.interface';
 import { SelectedItemService } from './../../servieces/selected-item.service';
 import { FormIngredient } from './../../models/form-ingredient.interface';
-import {
-  BehaviorSubject,
-  debounceTime,
-  map,
-  startWith,
-  Subscription,
-  take,
-} from 'rxjs';
+import { BehaviorSubject, Subscription, take } from 'rxjs';
 import {
   FormGroup,
   FormBuilder,
@@ -221,9 +214,13 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
       next: (response: Recipe) => {
         this.recipe.next(response);
         this.loaded.next(true);
+        this.endpointService.openMatSnackBar(
+          `Succesfully downloded repice with id: ${id}`
+        );
       },
-      error: () => {
+      error: (response) => {
         this.router.navigate(['/not-found']);
+        this.endpointService.openMatSnackBar(response);
       },
     });
     this.cdr.markForCheck();
@@ -287,6 +284,12 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
         this.makeSmartRoute(response._id);
         this.selectedItemService.added = false;
         this.selectedItemService.refhreshRecipes = true;
+        this.endpointService.openMatSnackBar(
+          `Succesfully created new repice with id: ${response._id}}`
+        );
+      },
+      error: (response) => {
+        this.endpointService.openMatSnackBar(response);
       },
     });
   }
@@ -297,6 +300,12 @@ export class SelectedElementDetailsComponent implements OnInit, OnDestroy {
         this.makeSmartRoute(this.id);
         this.selectedItemService.edittingMode = false;
         this.selectedItemService.refhreshRecipes = true;
+        this.endpointService.openMatSnackBar(
+          `Succesfully updated new repice with id: ${this.id}}`
+        );
+      },
+      error: (reponse) => {
+        this.endpointService.openMatSnackBar(reponse);
       },
     });
   }

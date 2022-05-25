@@ -15,6 +15,7 @@ import {
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-main-nav',
@@ -66,9 +67,17 @@ export class MainNavComponent implements OnInit, OnDestroy {
 
   private getAllRecipes(): void {
     this.cdr.detectChanges();
-    this.endpointService.getAllRecipes().subscribe((recipes) => {
-      this.selectedItemService.recipes = recipes;
-      this.cdr.markForCheck();
+    this.endpointService.getAllRecipes().subscribe({
+      next: (recipes: Recipe[]) => {
+        this.selectedItemService.recipes = recipes;
+        this.cdr.markForCheck();
+        this.endpointService.openMatSnackBar(
+          'Succesfully downlaoded all recipes'
+        );
+      },
+      error: (response) => {
+        this.endpointService.openMatSnackBar(response);
+      },
     });
   }
 
@@ -109,8 +118,16 @@ export class MainNavComponent implements OnInit, OnDestroy {
   }
 
   private deleteRecipeEndpoint(id: string): void {
-    this.endpointService.deleteRecipe(id).subscribe(() => {
-      this.selectedItemService.refhreshRecipes = true;
+    this.endpointService.deleteRecipe(id).subscribe({
+      next: () => {
+        this.selectedItemService.refhreshRecipes = true;
+        this.endpointService.openMatSnackBar(
+          `Succesfully deleted reciep with id: ${id}`
+        );
+      },
+      error: (response) => {
+        this.endpointService.openMatSnackBar(response);
+      },
     });
   }
 

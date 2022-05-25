@@ -1,3 +1,4 @@
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { PayloadRecipe } from './../models/payload-recipe.interface';
 import { apiKey } from './serviceData';
 import { Recipe } from './../models/recipe.interface';
@@ -9,7 +10,14 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class EndpointService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private _snackBar: MatSnackBar) {}
+
+  public openMatSnackBar(message: string): void {
+    this._snackBar.open(message, 'Close', {
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+    });
+  }
 
   public generateApiRecipe(newRecipe: any): Observable<any> {
     return this.http.post<any>(`/${apiKey}/recipe`, newRecipe);

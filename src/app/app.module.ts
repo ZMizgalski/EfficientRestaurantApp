@@ -16,6 +16,7 @@ import { ApiInterceptorService } from './servieces/api-interceptor.service';
 import { RecipeFilterPipe } from './servieces/filters/recipe-filter.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HourMinutesPipe } from './servieces/filters/hour-minutes.pipe';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { HourMinutesPipe } from './servieces/filters/hour-minutes.pipe';
   ],
   imports: [
     MatDialogModule,
+    MatSnackBarModule,
     ReactiveFormsModule,
     FormsModule,
     BrowserModule,
