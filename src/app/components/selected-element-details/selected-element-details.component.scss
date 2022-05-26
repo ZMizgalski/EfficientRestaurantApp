@@ -27,6 +27,7 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                margin: 20px;
 
                 @include action-button("&__button-add", $font-color_1, $background-color_2, $success);
                 @include action-button("&__button-update", $font-color_1, $background-color_2, $success);
