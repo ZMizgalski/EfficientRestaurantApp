@@ -37,7 +37,7 @@ List the ready features here:
 
 # Screenshots
 
-![alt text](https://github.com/ZMizgalski/zmizgalski.github.io/blob/main/imgs/1.png)
+![alt text](https://github.com/ZMizgalski/EfficientRestaurantApp/blob/master/images/1.png)
 
 ## Project Status
 Project is:  _complete_ .
