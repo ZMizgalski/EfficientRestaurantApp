@@ -38,17 +38,13 @@ List the ready features here:
 # Screenshots
 
 ![alt text](https://github.com/ZMizgalski/zmizgalski.github.io/blob/main/imgs/1.png)
-![alt text](https://github.com/ZMizgalski/zmizgalski.github.io/blob/main/imgs/2.png)
-![alt text](https://github.com/ZMizgalski/zmizgalski.github.io/blob/main/imgs/3.png)
-![alt text](https://github.com/ZMizgalski/zmizgalski.github.io/blob/main/imgs/4.png)
-![alt text](https://github.com/ZMizgalski/zmizgalski.github.io/blob/main/imgs/5.png)
-![alt text](https://github.com/ZMizgalski/zmizgalski.github.io/blob/main/imgs/6.png)
 
 ## Project Status
 Project is:  _complete_ .
 
 ## Room for Improvement
 - Design
+- Unit Tests
 
 ## Contact
 Created by [@zmizgalski](https://zmizgalski.github.io/) - feel free to contact me!
