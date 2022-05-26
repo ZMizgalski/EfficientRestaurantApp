@@ -50,4 +50,4 @@ Project is:  _complete_ .
 Created by [@zmizgalski](https://zmizgalski.github.io/) - feel free to contact me!
 
 ## License
-This project is open source and available under the [... License](https://github.com/ZMizgalski/zmizgalski.github.io/blob/main/LICENSE).
+This project is open source and available under the [... License](https://github.com/ZMizgalski/EfficientRestaurantApp/blob/master/LICENSE).
