@@ -94,10 +94,14 @@ describe('SelectedElementDetailsComponent', () => {
     expect(component.getIngredientsSize).toBe(1);
   });
 
-  it('should extracTimeCorrectly', () => {
+  it('should extracTimeCorrectly from extractPreparationTime(data: string)', () => {
     expect(
       component['extractPreparationTime']('121212dsdh 1212212321ssm')
     ).toBe(1219485041);
+  });
+
+  it('should return 0 from extractPreparationTime(data: string) if catsted to Number is 0', () => {
+    expect(component['extractPreparationTime']('0')).toBe(0);
   });
 
   it('should enableAllInputs', () => {

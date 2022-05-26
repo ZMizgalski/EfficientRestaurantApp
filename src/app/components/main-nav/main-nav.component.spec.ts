@@ -65,6 +65,11 @@ describe('MainNavComponent', () => {
     expect(component.edittingMode.getValue()).toBeTruthy();
   });
 
+  it('should truncate truncate(text: string, maxCount: number)', () => {
+    const truncatedName = component.truncate('1111111111', 5);
+    expect(truncatedName).toBe('1111....');
+  });
+
   it('should get addedSubject', () => {
     selectedItemService.added = true;
     expect(component.added.getValue()).toBeTruthy();
