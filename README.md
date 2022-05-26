@@ -30,7 +30,7 @@ List the ready features here:
 - Run `npm i`
 - Go to [CrudCrud](https://crudcrud.com/) and copy your id `https://crudcrud.com/api/FAKE ID`
 - Change `FAKE ID` in `proxy.conf.json` 
-- Change `apiKey` in serviceData.ts for `FAKE ID`
+- Change `apiKey` in `serviceData.ts` for `FAKE ID`
 - Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
 ## Usage
