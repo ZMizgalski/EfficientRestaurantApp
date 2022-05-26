@@ -1,27 +1,57 @@
 # EfficientRestaurantApp
+> Simple and efficient website made with Angular
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.6.
+## Table of Contents
+* [General Info](#general-information)
+* [Technologies Used](#technologies-used)
+* [Features](#features)
+* [Setup](#setup)
+* [Usage](#usage)
+* [Screenshots](#screenshots)
+* [Project Status](#project-status)
+* [Room for Improvement](#room-for-improvement)
+* [Contact](#contact)
+* [License](#license)
 
-## Development server
+## General Information
+- This project was made for recrutation.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Technologies Used
+- Angular
+- PrimeNG Iconsv5
+- AngularMaterial
 
-## Code scaffolding
+## Features
+List the ready features here:
+- CrudCrud.com endpoint
+- editing, displaying, deleting recipes
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Setup
+- Run `npm i`
+- Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-## Build
+## Usage
+1. Create a folder named you like.
+2. Inside your folder, open console and paste: `git clone https://github.com/ZMizgalski/zmizgalski.github.io.git`
+3. Then you are ready to go just open it in any Editor. (I prefer VSCode) [Download here](https://code.visualstudio.com/)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+# Screenshots
 
-## Running unit tests
+![alt text](https://github.com/ZMizgalski/zmizgalski.github.io/blob/main/imgs/1.png)
+![alt text](https://github.com/ZMizgalski/zmizgalski.github.io/blob/main/imgs/2.png)
+![alt text](https://github.com/ZMizgalski/zmizgalski.github.io/blob/main/imgs/3.png)
+![alt text](https://github.com/ZMizgalski/zmizgalski.github.io/blob/main/imgs/4.png)
+![alt text](https://github.com/ZMizgalski/zmizgalski.github.io/blob/main/imgs/5.png)
+![alt text](https://github.com/ZMizgalski/zmizgalski.github.io/blob/main/imgs/6.png)
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Project Status
+Project is:  _complete_ .
 
-## Running end-to-end tests
+## Room for Improvement
+- Design
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Contact
+Created by [@zmizgalski](https://zmizgalski.github.io/) - feel free to contact me!
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## License
+This project is open source and available under the [... License](https://github.com/ZMizgalski/zmizgalski.github.io/blob/main/LICENSE).
