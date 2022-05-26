@@ -10,7 +10,6 @@ import {
   FormArray,
   FormGroup,
   FormControl,
-  FormBuilder,
 } from '@angular/forms';
 
 import { SelectedElementDetailsComponent } from './selected-element-details.component';
