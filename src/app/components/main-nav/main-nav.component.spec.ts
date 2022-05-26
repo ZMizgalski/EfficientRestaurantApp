@@ -18,6 +18,7 @@ import {
 } from '@angular/common/http/testing';
 import { SelectedElementDetailsComponent } from '../selected-element-details/selected-element-details.component';
 import { Router } from '@angular/router';
+import { of } from 'rxjs';
 
 describe('MainNavComponent', () => {
   let component: MainNavComponent;
