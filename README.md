@@ -35,7 +35,7 @@ List the ready features here:
 
 ## Usage
 1. Create a folder named you like.
-2. Inside your folder, open console and paste: `git clone https://github.com/ZMizgalski/zmizgalski.github.io.git`
+2. Inside your folder, open console and paste: `git clone https://github.com/ZMizgalski/EfficientRestaurantApp.git`
 3. Then you are ready to go just open it in any Editor. (I prefer VSCode) [Download here](https://code.visualstudio.com/)
 
 # Screenshots
