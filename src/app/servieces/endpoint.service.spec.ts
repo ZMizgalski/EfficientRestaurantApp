@@ -1,4 +1,3 @@
-import { Recipe } from './../models/recipe.interface';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { PayloadRecipe } from './../models/payload-recipe.interface';
