@@ -129,6 +129,7 @@ export class MainNavComponent implements OnInit, OnDestroy {
   }
 
   public truncate(text: string, maxCount: number): string {
+    // future , existing Unit test
     return text.length > maxCount
       ? text.substring(0, maxCount - 1) + '....'
       : text;
