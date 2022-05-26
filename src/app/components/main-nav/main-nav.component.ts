@@ -98,10 +98,6 @@ export class MainNavComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((_) => {});
   }
 
-  public deleteRecipe(id: string): void {
-    this.openConfirmDialog(id);
-  }
-
   public addNewRecipe(): void {
     this.selectedItemService.added = true;
     this.selectedItemService.edittingMode = false;
@@ -124,6 +120,7 @@ export class MainNavComponent implements OnInit, OnDestroy {
         this.endpointService.openMatSnackBar(
           `Succesfully deleted reciep with id: ${id}`
         );
+        this.router.navigate(['/home']);
       },
       error: (response: HttpErrorResponse) => {
         this.endpointService.openMatSnackBar(response.message);
