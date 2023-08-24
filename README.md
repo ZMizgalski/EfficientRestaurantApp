@@ -1,5 +1,5 @@
 # EfficientRestaurantApp
-> Simple and efficient website made with Angular
+>  Simple and efficient website made in Angular for the recruitment process at ValueAdd
 
 ## Table of Contents
 * [General Info](#general-information)
